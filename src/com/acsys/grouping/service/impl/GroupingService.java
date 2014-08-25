@@ -81,8 +81,17 @@ public class GroupingService implements IGroupingService {
 			} else {
 				userMap.put(user.getId(), -1);
 			}
-			user.setGroupingId(null);
-			user.setGroupingName(null);
+
+			String groupingIds = user.getGroupingIds();
+			String newGroupingIds = "";
+			String[] ids = groupingIds.split(",");
+			for (String id : ids) {
+				if (!Utils.isEmpty(id) && !id.equals(groupingId)) {
+					newGroupingIds += id + ",";
+				}
+			}
+			user.setGroupingIds(newGroupingIds);
+
 			user.setModified(new Date());
 			user.setLastTime(new Date());
 			userService.updateUser(user);
@@ -95,8 +104,11 @@ public class GroupingService implements IGroupingService {
 			} else {
 				userMap.put(user.getId(), 1);
 			}
-			user.setGroupingId(groupingId);
-			user.setGroupingName(grouping.getName());
+
+			String groupingIds = user.getGroupingIds();
+			groupingIds += groupingId + ",";
+			user.setGroupingIds(groupingIds);
+
 			user.setModified(new Date());
 			user.setLastTime(new Date());
 			userService.updateUser(user);

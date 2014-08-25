@@ -8,8 +8,7 @@
 		<result property="email" column="email" />
 		<result property="password" column="password" />
 		<result property="amount" column="amount" />
-		<result property="groupingId" column="grouping_id" />
-		<result property="groupingName" column="grouping_name" />
+		<result property="groupingIds" column="grouping_ids" />
 		<result property="created" column="created" />
 		<result property="modified" column="modified" />
 		<result property="lastTime" column="last_time" />
@@ -28,22 +27,22 @@
 	</select>
 	
 	<select id="getAllUsers" resultType="List" resultMap="userMap">
-		select * from user order by name,grouping_id;
+		select * from user order by name,grouping_ids;
 	</select>
 	
 	<select id="getUsersForGrouping" parameterType="String" resultType="List" resultMap="userMap">
-		select * from user where grouping_id=#{groupingId}
+		select * from user where grouping_ids = '#{groupingId},' or grouping_ids like '%,#{groupingId},%'
 	</select>
 
 	<insert id="addUser" useGeneratedKeys="true" keyProperty="id">
 		insert
-		into user (name,email,password,amount,grouping_id,grouping_name,created,modified,last_time)
+		into user (name,email,password,amount,grouping_ids,created,modified,last_time)
 		values
-		(#{name},#{email},#{password},#{amount},#{groupingId},#{groupingName},#{created},#{modified},#{lastTime})
+		(#{name},#{email},#{password},#{amount},#{groupingIds},#{created},#{modified},#{lastTime})
 	</insert>
 	
 	<update id="updateUser" parameterType="user">
-		update user set name=#{name}, password=#{password}, amount=#{amount}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, modified=#{modified}, last_time=#{lastTime}
+		update user set name=#{name}, password=#{password}, amount=#{amount}, grouping_ids=#{groupingIds}, modified=#{modified}, last_time=#{lastTime}
 		where id=#{id}
 	</update>
 </mapper>

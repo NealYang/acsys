@@ -13,7 +13,6 @@ import com.acsys.account.model.User;
 import com.acsys.account.service.IUserService;
 import com.acsys.common.Utils;
 import com.acsys.grouping.dao.IGroupingDao;
-import com.acsys.grouping.model.Grouping;
 
 /**
  * @author Nealy
@@ -76,11 +75,7 @@ public class UserService implements IUserService {
 		user.setAmount(0);
 
 		if (!Utils.isEmpty(groupingId)) {
-			Grouping grouping = groupingDao.getGroupingById(groupingId);
-			if (!Utils.isEmpty(grouping)) {
-				user.setGroupingId(groupingId);
-				user.setGroupingName(grouping.getName());
-			}
+			user.setGroupingIds(groupingId + ",");
 		}
 
 		user.setCreated(new Date());

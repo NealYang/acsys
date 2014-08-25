@@ -12,8 +12,7 @@ public class User {
 	private String email = "";
 	private String password = "";
 	private double amount = 0;
-	private String groupingId;
-	private String groupingName;
+	private String groupingIds;
 	private Date created;
 	private Date modified;
 	private Date lastTime;
@@ -58,20 +57,12 @@ public class User {
 		this.amount = amount;
 	}
 
-	public String getGroupingId() {
-		return groupingId;
+	public String getGroupingIds() {
+		return groupingIds;
 	}
 
-	public void setGroupingId(String groupingId) {
-		this.groupingId = groupingId;
-	}
-
-	public String getGroupingName() {
-		return groupingName;
-	}
-
-	public void setGroupingName(String groupingName) {
-		this.groupingName = groupingName;
+	public void setGroupingIds(String groupingIds) {
+		this.groupingIds = groupingIds;
 	}
 
 	public Date getCreated() {
