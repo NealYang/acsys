@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acsys.bill.dao.IBillDao">
+	<resultMap type="bill" id="billMap">
+		<id property="id" column="id" />
+		<result property="date" column="date" />
+		<result property="place" column="place" />
+		<result property="amount" column="amount" />
+		<result property="payUserId" column="pay_user_id" />
+		<result property="payUserName" column="pay_user_name" />
+		<result property="groupingId" column="grouping_id" />
+		<result property="groupingName" column="grouping_name" />
+		<result property="created" column="created" />
+		<result property="modified" column="modified" />
+		<result property="lastTime" column="last_time" />
+		<result property="remark" column="remark" />
+		<collection property="attendants" javaType="ArrayList" column="id" ofType="attendant" select="getAttendantByBillId"/>
+	</resultMap>
+	
+	<resultMap type="attendant" id="attendantMap">
+		<id property="id" column="id" />
+		<result property="billId" column="bill_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="amount" column="amount"/>
+		<result property="delFlag" column="del_flag"/>
+	</resultMap>
+
+	<!-- bill -->
+	<select id="getBillById" parameterType="String" resultMap="billMap">
+		select * from bill where id=#{id}
+	</select>
+	
+	<select id="getBillsByGroupingId" resultType="List" parameterType="String" resultMap="billMap">
+		select * from bill where grouping_id =#{groupingId}
+	</select>
+	
+	<select id="getAllBills" resultType="List" resultMap="billMap">
+		select * from bill order by grouping_id,pay_user_name;
+	</select>
+
+	<insert id="addBill" useGeneratedKeys="true" keyProperty="id">
+		insert
+		into bill (date,place,amount,pay_user_id,pay_user_name,grouping_id,grouping_name,created,modified,last_time,remark)
+		values
+		(#{date},#{place},#{amount},#{payUserId},#{payUserName},#{groupingId},#{groupingName},#{created},#{modified},#{lastTime},#{remark})
+	</insert>
+	
+	<update id="updateBill" parameterType="bill">
+		update bill set date=#{date}, place=#{place}, amount=#{amount}, pay_user_id=#{payUserId}, payUserName=#{pay_user_name}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}
+		where id=#{id}
+	</update>
+	
+	<!-- attendant -->
+	<select id="getAttendantById" parameterType="String" resultMap="attendantMap">
+		select * from attendant where id=#{id}
+	</select>
+	
+	<select id="getAttendantByBillId" parameterType="String" resultType="List" resultMap="attendantMap">
+		select * from attendant where bill_id=#{id} and del_flag="0"
+	</select>
+	
+	<insert id="addAttendant" useGeneratedKeys="true" keyProperty="id">
+		insert
+		into attendant (bill_id,user_id,user_name,amount,del_flag)
+		values
+		(#{billId},#{userId},#{userName},#{amount},#{delFlag})
+	</insert>
+	
+	<update id="updateAttendant" parameterType="attendant">
+		update attendant set bill_id=#{billId}, amount=#{amount}, del_flag=#{delFlag}
+		where id=#{id}
+	</update>
+</mapper>

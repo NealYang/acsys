@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acsys.account.dao.IUserDao">
+	<resultMap type="user" id="userMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="amount" column="amount" />
+		<result property="groupingId" column="grouping_id" />
+		<result property="groupingName" column="grouping_name" />
+		<result property="created" column="created" />
+		<result property="modified" column="modified" />
+		<result property="lastTime" column="last_time" />
+	</resultMap>
+
+	<select id="getUserById" parameterType="String" resultMap="userMap">
+		select * from user where id=#{id}
+	</select>
+	
+	<select id="getUserByIds" parameterType="String" resultMap="userMap">
+		select * from user where id in #{ids}
+	</select>
+
+	<select id="getUserByEmail" parameterType="String" resultType="List" resultMap="userMap">
+		select * from user where email=#{email}
+	</select>
+	
+	<select id="getAllUsers" resultType="List" resultMap="userMap">
+		select * from user order by name,grouping_id;
+	</select>
+	
+	<select id="getUsersForGrouping" parameterType="String" resultType="List" resultMap="userMap">
+		select * from user where grouping_id=#{groupingId}
+	</select>
+
+	<insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+		insert
+		into user (name,email,password,amount,grouping_id,grouping_name,created,modified,last_time)
+		values
+		(#{name},#{email},#{password},#{amount},#{groupingId},#{groupingName},#{created},#{modified},#{lastTime})
+	</insert>
+	
+	<update id="updateUser" parameterType="user">
+		update user set name=#{name}, password=#{password}, amount=#{amount}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, modified=#{modified}, last_time=#{lastTime}
+		where id=#{id}
+	</update>
+</mapper>

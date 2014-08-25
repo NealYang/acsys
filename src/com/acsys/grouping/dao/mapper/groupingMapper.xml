@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acsys.grouping.dao.IGroupingDao">
+	<resultMap type="grouping" id="groupingMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="memberNum" column="member_num" />
+		<result property="creatorId" column="creator_id" />
+		<result property="creatorName" column="creator_name" />
+		<result property="created" column="created" />
+		<result property="modified" column="modified" />
+		<result property="lastTime" column="last_time" />
+		<result property="remark" column="remark" />
+	</resultMap>
+
+	<select id="getGroupingById" parameterType="String" resultMap="groupingMap">
+		select * from grouping where id=#{id}
+	</select>
+	
+	<select id="getAllGroupings" resultType="List" resultMap="groupingMap">
+		select * from grouping order by name
+	</select>
+
+	<insert id="addGrouping" useGeneratedKeys="true" keyProperty="id">
+		insert
+		into grouping (name,member_num,creator_id,creator_name,created,modified,last_time,remark)
+		values
+		(#{name},#{memberNum},#{creatorId},#{creatorName},#{created},#{modified},#{lastTime},#{remark})
+	</insert>
+	
+	<update id="updateGrouping" parameterType="grouping">
+		update grouping set name=#{name}, member_num=#{memberNum}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}
+		where id=#{id}
+	</update>
+</mapper>

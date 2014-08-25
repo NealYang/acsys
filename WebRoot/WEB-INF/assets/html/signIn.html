@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign In</title>
+
+    <!-- Bootstrap -->
+    <link href="../../includes/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/signin.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="../../includes/js/html5shiv.min.js"></script>
+    <script src="../../includes/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+    <form class="form-signin" id="signForm" name="signForm" action="" role="form" method="post">
+        <h2 class="form-signin-heading">Sign In</h2>
+        <h4>new to accounting system? <a href="signUp.html" id="sign-up">sign Up</a></h4>
+        <div class="form-group">
+            <label for="email-name" class="control-label">Email Address</label>
+            <div class="input-group" data-placement="bottom" >
+                <input class="form-control" id="email-name" value=""/>
+                <span class="input-group-addon">@ehealth-china.com</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="control-label">Password</label>
+            <input type="password" id="password" class="form-control" data-placement="bottom"/>
+        </div>
+        <button id="sign" class="btn btn-lg btn-success btn-block" type="button">Sign In</button>
+    </form>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../../includes/js/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../includes/js/bootstrap.min.js"></script><!---->
+<script src="../js/sign.js"></script>
+</body>
+</html>

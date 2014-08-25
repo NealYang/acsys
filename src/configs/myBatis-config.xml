@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC
+	"-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="user" type="com.acsys.account.model.User" />
+		<typeAlias alias="grouping" type="com.acsys.grouping.model.Grouping" />
+		<typeAlias alias="bill" type="com.acsys.bill.model.Bill" />
+		<typeAlias alias="attendant" type="com.acsys.bill.model.Attendant" />
+	</typeAliases>
+
+	<!-- 因为已经在applicationContext.xml中指定了映射文件的位置，省略 -->
+	<!-- <mappers> <mapper resource="com/acsys/test/dao/mapper/testMapper.xml"/> </mappers> -->
+</configuration>

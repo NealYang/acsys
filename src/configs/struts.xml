@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true" />
+    
+    <!-- 将Action的创建交给spring来管理 -->
+	<constant name="struts.objectFactory" value="spring" />
+
+	<!-- 更改struts2请求Action的后缀名，默认为action。若想去掉后缀，设为","即可 -->
+	<constant name="struts.action.extension" value=","></constant>
+	
+	<!-- json-default已经extends struts-default -->
+	<package name="abstract_default" abstract="true" extends="json-default" namespace="/">
+		<!-- 公共元素放到此抽象包 -->
+		<interceptors>
+			<interceptor name="userAuthority"
+				class="com.acsys.struts.interceptor.LoginInterceptor">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<!-- 引用系统默认的拦截器 -->
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="userAuthority" />
+			</interceptor-stack>
+		</interceptors>
+		
+		<!-- 定义默认拦截器 -->
+		<default-interceptor-ref name="mydefault" />
+
+		<!-- 定义全局Result -->
+		<global-results>
+			<!-- <result name="error">/WEB-INF/assets/common/error.jsp</result> -->
+			<result name="login" type="redirect">/account/login</result>
+		</global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+	</package>
+	
+	<package name="acsys" extends="abstract_default" namespace="/">
+		<action name="home" class="com.acsys.home.action.HomeAction">
+			<result name="success" type="freemarker">/WEB-INF/resources/templates/home.ftl</result>
+			<!-- 使用拦截器，若定义了默认拦截器，此package内所有Action都将使用该拦截器-->
+			<!-- <interceptor-ref name="mydefault" /> -->
+		</action>
+		
+		<action name="bill" class="com.acsys.bill.action.BillAction">
+			<result name="input">/WEB-INF/resources/templates/bill.ftl</result>
+			<result name="success" type="redirect">/home</result>
+		</action>
+		
+		<action name="grouping" class="com.acsys.grouping.action.GroupingAction" method="input">
+			<result name="input" type="freemarker">/WEB-INF/resources/templates/grouping/grouping.ftl</result>
+			<result name="grouping-form" type="freemarker">/WEB-INF/resources/templates/grouping/includes/groupingForm.ftl</result>
+		</action>
+	</package>
+
+	<package name="account" extends="json-default" namespace="/account">
+		<action name="signup" class="com.acsys.account.action.SignUpAction" method="input">
+			<result name="input" type="freemarker">/WEB-INF/resources/templates/signUp.ftl</result>
+			<result name="success" type="redirect">/home</result>
+		</action>
+		<action name="login" class="com.acsys.account.action.LoginAction" method="input">
+			<result name="input" type="freemarker">/WEB-INF/resources/templates/login.ftl</result>
+			<result name="success" type="redirect">/home</result>
+			<!-- <result name="success" type="redirectAction">home</result> -->
+		</action>
+		<action name="logout" class="com.acsys.account.action.LogoutAction">
+			<result name="input" type="redirect">/home</result>
+		</action>
+	</package>
+	
+	<!-- <include file="../configs/struts-*.xml"></include> -->
+</struts>
