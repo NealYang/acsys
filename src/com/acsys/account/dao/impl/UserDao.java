@@ -1,5 +1,6 @@
 package com.acsys.account.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -43,7 +44,12 @@ public class UserDao implements IUserDao {
 	}
 
 	public List<User> getUsersForGrouping(String groupingId) {
-		List<User> list = sqlSession.selectList("getUsersForGrouping", groupingId);
+		List<User> list = new ArrayList<User>();
+		try {
+			list = sqlSession.selectList("getUsersForGrouping", groupingId);
+		} catch (Exception e) {
+			System.out.print(e);
+		}
 		return list;
 	}
 

@@ -14,7 +14,7 @@
 		<result property="lastTime" column="last_time" />
 	</resultMap>
 
-	<select id="getUserById" parameterType="String" resultMap="userMap">
+	<select id="getUserById" resultMap="userMap">
 		select * from user where id=#{id}
 	</select>
 	
@@ -31,7 +31,7 @@
 	</select>
 	
 	<select id="getUsersForGrouping" parameterType="String" resultType="List" resultMap="userMap">
-		select * from user where grouping_ids = '#{groupingId},' or grouping_ids like '%,#{groupingId},%'
+		select * from user where grouping_ids = '${_parameter},' or grouping_ids like '%,${_parameter},%'
 	</select>
 
 	<insert id="addUser" useGeneratedKeys="true" keyProperty="id">

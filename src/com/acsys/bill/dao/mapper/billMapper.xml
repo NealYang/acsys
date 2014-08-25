@@ -28,11 +28,11 @@
 	</resultMap>
 
 	<!-- bill -->
-	<select id="getBillById" parameterType="String" resultMap="billMap">
+	<select id="getBillById" resultMap="billMap">
 		select * from bill where id=#{id}
 	</select>
 	
-	<select id="getBillsByGroupingId" resultType="List" parameterType="String" resultMap="billMap">
+	<select id="getBillsByGroupingId" resultType="List" resultMap="billMap">
 		select * from bill where grouping_id =#{groupingId}
 	</select>
 	
@@ -53,11 +53,11 @@
 	</update>
 	
 	<!-- attendant -->
-	<select id="getAttendantById" parameterType="String" resultMap="attendantMap">
+	<select id="getAttendantById" resultMap="attendantMap">
 		select * from attendant where id=#{id}
 	</select>
 	
-	<select id="getAttendantByBillId" parameterType="String" resultType="List" resultMap="attendantMap">
+	<select id="getAttendantByBillId" resultType="List" resultMap="attendantMap">
 		select * from attendant where bill_id=#{id} and del_flag="0"
 	</select>
 	

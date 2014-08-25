@@ -14,7 +14,7 @@
 		<result property="remark" column="remark" />
 	</resultMap>
 
-	<select id="getGroupingById" parameterType="String" resultMap="groupingMap">
+	<select id="getGroupingById" resultMap="groupingMap">
 		select * from grouping where id=#{id}
 	</select>
 	
