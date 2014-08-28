@@ -43,29 +43,29 @@
 	
 	<package name="acsys" extends="abstract_default" namespace="/">
 		<action name="home" class="com.acsys.home.action.HomeAction">
-			<result name="success" type="freemarker">/WEB-INF/resources/templates/home.ftl</result>
+			<result name="success" type="freemarker">/WEB-INF/resources/templates/home/home.ftl</result>
 			<!-- 使用拦截器，若定义了默认拦截器，此package内所有Action都将使用该拦截器-->
 			<!-- <interceptor-ref name="mydefault" /> -->
 		</action>
 		
-		<action name="bill" class="com.acsys.bill.action.BillAction">
-			<result name="input">/WEB-INF/resources/templates/bill.ftl</result>
-			<result name="success" type="redirect">/home</result>
+		<action name="bill" class="com.acsys.bill.action.BillAction" method="input">
+			<result name="input" type="freemarker">/WEB-INF/resources/templates/bill/bill.ftl</result>
 		</action>
 		
 		<action name="grouping" class="com.acsys.grouping.action.GroupingAction" method="input">
 			<result name="input" type="freemarker">/WEB-INF/resources/templates/grouping/grouping.ftl</result>
+			<result name="grouping-list" type="freemarker">/WEB-INF/resources/templates/grouping/includes/groupingList.ftl</result>
 			<result name="grouping-form" type="freemarker">/WEB-INF/resources/templates/grouping/includes/groupingForm.ftl</result>
 		</action>
 	</package>
 
 	<package name="account" extends="json-default" namespace="/account">
 		<action name="signup" class="com.acsys.account.action.SignUpAction" method="input">
-			<result name="input" type="freemarker">/WEB-INF/resources/templates/signUp.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/resources/templates/account/signUp.ftl</result>
 			<result name="success" type="redirect">/home</result>
 		</action>
 		<action name="login" class="com.acsys.account.action.LoginAction" method="input">
-			<result name="input" type="freemarker">/WEB-INF/resources/templates/login.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/resources/templates/account/login.ftl</result>
 			<result name="success" type="redirect">/home</result>
 			<!-- <result name="success" type="redirectAction">home</result> -->
 		</action>

@@ -12,6 +12,7 @@
 		<result property="modified" column="modified" />
 		<result property="lastTime" column="last_time" />
 		<result property="remark" column="remark" />
+		<result property="del_flag" column="delFlag" />
 	</resultMap>
 
 	<select id="getGroupingById" resultMap="groupingMap">
@@ -24,13 +25,13 @@
 
 	<insert id="addGrouping" useGeneratedKeys="true" keyProperty="id">
 		insert
-		into grouping (name,member_num,creator_id,creator_name,created,modified,last_time,remark)
+		into grouping (name,member_num,creator_id,creator_name,created,modified,last_time,remark,del_flag)
 		values
-		(#{name},#{memberNum},#{creatorId},#{creatorName},#{created},#{modified},#{lastTime},#{remark})
+		(#{name},#{memberNum},#{creatorId},#{creatorName},#{created},#{modified},#{lastTime},#{remark},#{delFlag})
 	</insert>
 	
 	<update id="updateGrouping" parameterType="grouping">
-		update grouping set name=#{name}, member_num=#{memberNum}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}
+		update grouping set name=#{name}, member_num=#{memberNum}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}, del_flag=#{delFlag}
 		where id=#{id}
 	</update>
 </mapper>

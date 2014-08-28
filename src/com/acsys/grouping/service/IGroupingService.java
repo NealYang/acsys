@@ -13,11 +13,13 @@ public interface IGroupingService {
 
 	public List<Grouping> getAllGroupings();
 
-	public String addGrouping(String name, String remark);
+	public String addGrouping(String name, String remark, String[] addUserIds);
 
-	public int updateGroupingUser(String groupingId, String[] delUserIds, String[] addUserIds);
+	public int updateGroupingUser(Grouping grouping, String[] delUserIds, String[] addUserIds);
 
-	public void updateGroupingBase(String groupingId, String groupingName, String remark, int userNum);
+	public void updateGroupingBase(Grouping grouping);
 
-	public void updateGrouping(String groupingId, String groupingName, String remark, String[] delUserIds, String[] addUserIds);
+	public void updateGrouping(Grouping grouping, String[] delUserIds, String[] addUserIds);
+
+	public void deleteGrouping(String groupingId);
 }

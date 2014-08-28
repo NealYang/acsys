@@ -15,6 +15,7 @@
 		<result property="modified" column="modified" />
 		<result property="lastTime" column="last_time" />
 		<result property="remark" column="remark" />
+		<result property="delFlag" column="del_flag" />
 		<collection property="attendants" javaType="ArrayList" column="id" ofType="attendant" select="getAttendantByBillId"/>
 	</resultMap>
 	
@@ -42,13 +43,13 @@
 
 	<insert id="addBill" useGeneratedKeys="true" keyProperty="id">
 		insert
-		into bill (date,place,amount,pay_user_id,pay_user_name,grouping_id,grouping_name,created,modified,last_time,remark)
+		into bill (date,place,amount,pay_user_id,pay_user_name,grouping_id,grouping_name,created,modified,last_time,remark,del_flag)
 		values
-		(#{date},#{place},#{amount},#{payUserId},#{payUserName},#{groupingId},#{groupingName},#{created},#{modified},#{lastTime},#{remark})
+		(#{date},#{place},#{amount},#{payUserId},#{payUserName},#{groupingId},#{groupingName},#{created},#{modified},#{lastTime},#{remark},#{delFlag})
 	</insert>
 	
 	<update id="updateBill" parameterType="bill">
-		update bill set date=#{date}, place=#{place}, amount=#{amount}, pay_user_id=#{payUserId}, payUserName=#{pay_user_name}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}
+		update bill set date=#{date}, place=#{place}, amount=#{amount}, pay_user_id=#{payUserId}, payUserName=#{pay_user_name}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}, del_flag=#{delFlag}
 		where id=#{id}
 	</update>
 	

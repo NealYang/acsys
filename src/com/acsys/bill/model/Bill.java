@@ -22,6 +22,7 @@ public class Bill {
 	private Date modified;
 	private Date lastTime;
 	private String remark;
+	private String delFlag = "0";
 
 	public String getId() {
 		return id;
@@ -125,5 +126,13 @@ public class Bill {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(String delFlag) {
+		this.delFlag = delFlag;
 	}
 }

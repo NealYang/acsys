@@ -17,29 +17,11 @@
     <script src="/includes/js/respond.min.js"></script>
     <![endif]-->
 </head>
+
+<#import "../dashboard/dashboard.ftl" as dashboard />
+
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span> <span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="home">Accounting System</a>
-			</div>
-			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="home">Home</a></li>
-					<li class="active"><a href="grouping">Manage Grouping</a></li>
-					<li><a href="account/logout">Log Out</a></li>
-				</ul>
-				<div class="navbar-form navbar-right">
-					<button id="new-bill-btn" class="form-control btn btn-default">New Bill</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<@dashboard.common />
 	<div class="container-fluid">
 		<div class="col-sm-3 col-md-2 sidebar">
 			<ul class="nav nav-sidebar">
@@ -59,7 +41,18 @@
 			</ul>
 		</div>
 		<div class="col-sm-9 col-md-10 col-sm-offset-3 col-md-offset-2 grouping-form">
-			
+			<div class="sub-header clearfix">
+				<div class="row">
+					<h2 class="col-md-10">Manage Grouping</h2>
+					<div class="col-md-offset-10">
+						<button type="button" class="btn btn-primary">Add</button>
+						<button id="edit" type="button" class="btn btn-link">Edit</button>
+						<button type="button" class="btn btn-link">Delete</button>
+					</div>
+				</div>
+			</div>
+			<div class="content-form">
+			</div>
 		</div>
 	</div>
 	
@@ -68,35 +61,17 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/includes/js/bootstrap.min.js"></script>
 	<script src="/js/common.js"></script>
+	<script src="/js/grouping.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$.ajax({
 				url: "/acsys/grouping!loadGrouping?groupingId=${groupingId}",
 				cache:false,
 				context: document.body,
-				beforeSend :function(){},
+				beforeSend :function(){
+				},
 				success: function(msg){
-					$(".grouping-form").html(msg);
-				}
-			});
-			
-	        $("#edit").click(function(){
-	            $(".form-control").attr("disabled",false);
-	            $(".btn-group2").removeClass("hide");
-	        })
-	        $("#new-bill-btn").click(function(){
-	            window.location.href="bill"
-	        })
-		});
-		$(".nav-sidebar li").click(function(){
-			var id = this.children[1].value;
-			$.ajax({
-				url: "/acsys/grouping!loadGrouping?groupingId="+id,
-				cache:false,
-				context: document.body,
-				beforeSend :function(){},
-				success: function(msg){
-					$(".grouping-form").html(msg);
+					$(".content-form").html(msg);
 				}
 			});
 		});

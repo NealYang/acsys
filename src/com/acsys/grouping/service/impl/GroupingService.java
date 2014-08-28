@@ -36,11 +36,12 @@ public class GroupingService implements IGroupingService {
 		return groupingDao.getAllGroupings();
 	}
 
-	public String addGrouping(String name, String remark) {
+	public String addGrouping(String name, String remark, String[] addUserIds) {
 		if (Utils.isEmpty(name)) {
 			return "";
 		}
 
+		String groupingId = "";
 		Grouping grouping = new Grouping();
 		User currentUser = CommonContext.getCurrentUser();
 
@@ -57,20 +58,19 @@ public class GroupingService implements IGroupingService {
 		grouping.setLastTime(new Date());
 		grouping.setRemark(remark);
 
-		return groupingDao.addGrouping(grouping);
+		groupingId = groupingDao.addGrouping(grouping);
+		grouping.setId(groupingId);
+		updateGroupingUser(grouping, null, addUserIds);
+		return groupingId;
 	}
 
-	public int updateGroupingUser(String groupingId, String[] delUserIds, String[] addUserIds) {
-		if (Utils.isEmpty(groupingId)) {
-			return 0;
-		}
-		Grouping grouping = groupingDao.getGroupingById(groupingId);
-		if (Utils.isEmpty(grouping)) {
+	public int updateGroupingUser(Grouping grouping, String[] delUserIds, String[] addUserIds) {
+		if (Utils.isEmpty(grouping) || Utils.isEmpty(grouping.getId())) {
 			return 0;
 		}
 
 		Map<String, Integer> userMap = new HashMap<String, Integer>();
-		int userNum = 0;
+		int userNum = grouping.getMemberNum();
 		List<User> delUsers = userService.getUserByIds(delUserIds);
 		List<User> addUsers = userService.getUserByIds(addUserIds);
 		for (User user : delUsers) {
@@ -86,7 +86,7 @@ public class GroupingService implements IGroupingService {
 			String newGroupingIds = "";
 			String[] ids = groupingIds.split(",");
 			for (String id : ids) {
-				if (!Utils.isEmpty(id) && !id.equals(groupingId)) {
+				if (!Utils.isEmpty(id) && !id.equals(grouping.getId())) {
 					newGroupingIds += id + ",";
 				}
 			}
@@ -106,7 +106,7 @@ public class GroupingService implements IGroupingService {
 			}
 
 			String groupingIds = user.getGroupingIds();
-			groupingIds += groupingId + ",";
+			groupingIds += grouping.getId() + ",";
 			user.setGroupingIds(groupingIds);
 
 			user.setModified(new Date());
@@ -120,27 +120,43 @@ public class GroupingService implements IGroupingService {
 		return userNum;
 	}
 
-	public void updateGroupingBase(String groupingId, String groupingName, String remark, int userNum) {
+	public void updateGroupingBase(Grouping grouping) {
+		if (Utils.isEmpty(grouping) || Utils.isEmpty(grouping.getId())) {
+			return;
+		}
+
+		grouping.setModified(new Date());
+		grouping.setLastTime(new Date());
+		groupingDao.updateGrouping(grouping);
+	}
+
+	public void updateGrouping(Grouping grouping, String[] delUserIds, String[] addUserIds) {
+		int userNum = this.updateGroupingUser(grouping, delUserIds, addUserIds);
+		this.updateGroupingBase(grouping);
+	}
+
+	public void deleteGrouping(String groupingId) {
 		if (Utils.isEmpty(groupingId)) {
 			return;
 		}
-		Grouping grouping = groupingDao.getGroupingById(groupingId);
+		Grouping grouping = this.getGroupingById(groupingId);
 		if (Utils.isEmpty(grouping)) {
 			return;
 		}
 
-		if (!Utils.isEmpty(groupingName)) {
-			grouping.setName(groupingName);
-		}
-		grouping.setMemberNum(userNum);
+		grouping.setDelFlag("1");
 		grouping.setModified(new Date());
 		grouping.setLastTime(new Date());
-		grouping.setRemark(remark);
-		groupingDao.updateGrouping(grouping);
-	}
 
-	public void updateGrouping(String groupingId, String groupingName, String remark, String[] delUserIds, String[] addUserIds) {
-		int userNum = this.updateGroupingUser(groupingId, delUserIds, addUserIds);
-		this.updateGroupingBase(groupingId, groupingName, remark, userNum);
+		String[] userIds = null;
+		List<User> users = userService.getUsersForGrouping(groupingId);
+		if (!Utils.isEmpty(users)) {
+			for (int i = 0; i < users.size(); i++) {
+				userIds[i] = users.get(i).getId();
+			}
+		}
+
+		this.updateGroupingBase(grouping);
+		this.updateGroupingUser(grouping, userIds, null);
 	}
 }
