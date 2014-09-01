@@ -29,5 +29,4 @@ public class AttendantDao implements IAttendantDao {
 	public void updateAttendant(Attendant attendant) {
 		sqlSession.update("updateAttendant", attendant);
 	}
-
 }

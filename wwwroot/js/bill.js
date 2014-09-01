@@ -50,19 +50,6 @@
     	//window.location.href = "/acsys/bill?groupingId="+$(this).val();
 	}
 	
-	function autoFillUserAmount() {
-		var checkedUserNum = getCheckedUserNum();
-		if(checkedUserNum == 0) return;
-		var amount = $("#amount").val();
-        if(amount != null && amount != undefined && amount > 0) {
-        	var aveAmount = amount;
-    		aveAmount = amount/checkedUserNum;
-        	$(".user-amount").val(aveAmount.toFixed(2));
-        } else {
-        	$(".user-amount").val(0);
-        }
-	}
-	
 	function getCheckedUserNum() {
 		var num = 0;
     	for(var i=0; i<$(".attendant-checkbox").size(); i++) {
@@ -74,36 +61,52 @@
     	return num;
 	}
 	
-	function totalAmountCheck() {
+	function autoFillUserAmount() {
+		var checkedUserNum = getCheckedUserNum();
+		if(checkedUserNum == 0) return;
 		var amount = $("#amount").val();
-    	if(amount == null || amount == undefined || amount < 0) {
-    		amount = 0;
+        if(amount != null && amount != undefined) {
+        	var aveAmount = amount;
+    		aveAmount = amount/checkedUserNum;
+        	$(".user-amount").val(aveAmount.toFixed(2));
+        } else {
+        	$(".user-amount").val(0);
+        }
+	}
+	
+	function totalAmountCheck() {
+    	if($("#amount").val() == null || $("#amount").val() == undefined) {
+    		var amount = 0;
+    	} else {
+    		var amount = parseFloat($("#amount").val());
     	}
     	var total = 0;
     	for(var i=0; i<$(".user-amount").size(); i++) {
     		var input = $(".user-amount").get(i);
     		if(input.hidden != undefined && input.hidden==false) {
-    			total += (input.value != null && input.value != undefined && input.value > 0)?parseFloat(input.value):0;
+    			total += (input.value != null && input.value != undefined)?parseFloat(input.value):0;
     		}
     	}
-    	if(total!=amount) {
-    		$("#amount-error").text("The sum doesn't equal amount!");
-    	} else {
+    	if((amount-1) <= total && total <= (amount+1)) {
     		$("#amount-error").text("");
+    	} else {
+    		$("#amount-error").text("The sum doesn't equal amount!");
     	}
 	}
 	
 	function setAttendantsForForm() {
 		$("#attendants-div").html("");
+		var count = 0;
     	for(var i=0; i<$(".attendant-checkbox").size(); i++) {
 			var checkbox = $(".attendant-checkbox").get(i);
 			if(checkbox.checked != null && checkbox.checked != undefined && checkbox.checked == true) {
 				var userId = $(checkbox).next().val();
 				var userName = $(checkbox).parent().text().replace(/\s+/g,"").replace(/[\r\n]/g,"");
 				var amount = $(checkbox).parent().next().val();
-				$("#attendants-div").append("<input type='text' name='bill.attendants[" + i + "].userId' value='" + userId + "' hidden=true />")
-				.append("<input type='text' name='bill.attendants[" + i + "].userName' value='" + userName + "' hidden=true />")
-				.append("<input type='text' name='bill.attendants[" + i + "].amount' value='" + amount + "' hidden=true />");
+				$("#attendants-div").append("<input type='text' name='bill.attendants[" + count + "].userId' value='" + userId + "' hidden=true />")
+				.append("<input type='text' name='bill.attendants[" + count + "].userName' value='" + userName + "' hidden=true />")
+				.append("<input type='text' name='bill.attendants[" + count + "].amount' value='" + amount + "' hidden=true />");
+			count++;
 			}
 		}
 	}

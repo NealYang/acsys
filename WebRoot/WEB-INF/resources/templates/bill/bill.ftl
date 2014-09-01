@@ -8,7 +8,8 @@
 
 <!-- Bootstrap -->
 <link href="/includes/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/custom.css" rel="stylesheet">
+<link href="/includes/DataTables-1.10.2/examples/resources/bootstrap/3/dataTables.bootstrap.css"  rel="stylesheet">
+<link href="/css/common.css" rel="stylesheet">
 <link href="/css/bill.css" rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -17,6 +18,21 @@
     <script src="/includes/js/html5shiv.min.js"></script>
     <script src="/includes/js/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- jQuery necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/includes/js/jquery.min.js"></script>
+    <script src="/includes/DataTables-1.10.2/media/js/jquery.dataTables.js"></script>
+    <script src="/includes/DataTables-1.10.2/examples/resources/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script>
+        $(document).ready(function() {
+            var table2 = $('#amount-list').DataTable({
+                "bFilter": false,
+                "bLengthChange": false,
+                "bPaginate": false,
+                "bInfo": false
+            });
+        });
+    </script>
 </head>
 
 <#import "../dashboard/dashboard.ftl" as dashboard />
@@ -34,11 +50,11 @@
 						</#list>
 					</select>
 				</div>
-				<table class="table">
+				<table id="amount-list" class="table">
 					<thead>
 						<tr>
-							<th>User<span class="caret"></span></th>
-							<th>Amount<span class="caret"></span></th>
+							<th>User</span></th>
+							<th>Amount</span></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -92,11 +108,11 @@
 							</div>
 							<div class="form-group radio-group">
 								<label class="radio-inline">
-									<input type="radio" checked id="ave-pay" value="The Average Pay" />
+									<input type="radio" checked id="ave-pay" name="radio" value="The Average Pay" />
 									Average Pay
 								</label>
 								<label class="radio-inline">
-									<input type="radio" id="go-dutch" value="Go Dutch" />
+									<input type="radio" id="go-dutch" name="radio" value="Go Dutch" />
 									Go Dutch
 								</label>
 							</div>
@@ -113,7 +129,7 @@
 										<input type="checkbox" class="attendant-checkbox" />
 										<input type="text" hidden=true value="${user.id!}" />&nbsp;&nbsp;${user.name!}
 									</label>
-									<input type="text" class="user-amount" disabled="true" />
+									<input type="text" class="user-amount bootstrap-input" disabled="disabled" />
 								</div>
 							</#list>
 						</div>
@@ -135,8 +151,6 @@
 		<input id="input-hidden" name="groupingId" value="" />
 	</form>
 	
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="/includes/js/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/includes/js/bootstrap.min.js"></script>
 	<script src="/js/bill.js"></script>
@@ -144,14 +158,27 @@
 	    (function($){
 	    	<#list groupings as grouping>
 				<#if groupingId?exists && groupingId==grouping.id>
-					<#assign index=grouping_index />
+					<#assign grpIndex=grouping_index />
 					<#assign groupingName=grouping.name>
 					<#break>
 				</#if>
 			</#list>
-			$("#grouping-left").get(0).selectedIndex = ${index!0};
-			$("#grouping-right").get(0).selectedIndex = ${index!0};
+			$("#grouping-left").get(0).selectedIndex = ${grpIndex!0};
+			$("#grouping-right").get(0).selectedIndex = ${grpIndex!0};
 			$("#groupingName").val("${groupingName!}");
+			
+			<#list users as user>
+				<#if user_index==0>
+					<#assign userName=user.name>
+				</#if>
+				<#if currentUser?exists && currentUser.id==user.id>
+					<#assign urIndex=user_index />
+					<#assign userName=user.name>
+					<#break>
+				</#if>
+			</#list>
+			$("#payer").get(0).selectedIndex = ${urIndex!0};
+			$("#payerName").val("${userName!}");
 			$("#payer").change(function(){
 				var index = this.selectedIndex;
 				$("#payerName").val(this.options[index].text.replace(/\s+/g,"").replace(/[\r\n]/g,""));

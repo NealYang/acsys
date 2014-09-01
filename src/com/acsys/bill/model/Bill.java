@@ -17,6 +17,7 @@ public class Bill {
 	private String payUserName;
 	private String groupingId;
 	private String groupingName;
+	private String ipAddr;
 	private List<Attendant> attendants = new ArrayList<Attendant>();
 	private Date created;
 	private Date modified;
@@ -86,6 +87,14 @@ public class Bill {
 
 	public void setGroupingName(String groupingName) {
 		this.groupingName = groupingName;
+	}
+
+	public String getIpAddr() {
+		return ipAddr;
+	}
+
+	public void setIpAddr(String ipAddr) {
+		this.ipAddr = ipAddr;
 	}
 
 	public List<Attendant> getAttendants() {

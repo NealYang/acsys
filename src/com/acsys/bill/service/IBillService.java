@@ -16,7 +16,7 @@ public interface IBillService {
 
 	public List<Bill> getAllBills();
 
-	public String addBill(Bill bill, List<Attendant> attendants);
+	public String addBill(Bill bill);
 
 	public void updateBill(Bill bill, String[] delAttendantIds, List<Attendant> addAttendants);
 }

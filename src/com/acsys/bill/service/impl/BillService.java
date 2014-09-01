@@ -1,5 +1,6 @@
 package com.acsys.bill.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class BillService implements IBillService {
 
 	public List<Bill> getBillsByGroupingId(String groupingId) {
 		if (Utils.isEmpty(groupingId)) {
-			return null;
+			return new ArrayList<Bill>();
 		}
 		return billDao.getBillsByGroupingId(groupingId);
 	}
@@ -48,7 +49,7 @@ public class BillService implements IBillService {
 		return list;
 	}
 
-	public String addBill(Bill bill, List<Attendant> attendants) {
+	public String addBill(Bill bill) {
 		if (Utils.isEmpty(bill)) {
 			return "";
 		}
@@ -60,7 +61,12 @@ public class BillService implements IBillService {
 		if (Utils.isEmpty(billId)) {
 			return "";
 		}
+
+		List<Attendant> attendants = bill.getAttendants();
 		for (Attendant attendant : attendants) {
+			if (Utils.isEmpty(attendant)) {
+				continue;
+			}
 			String userId = attendant.getUserId();
 			if (Utils.isEmpty(userId)) {
 				continue;

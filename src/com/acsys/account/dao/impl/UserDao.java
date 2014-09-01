@@ -45,11 +45,7 @@ public class UserDao implements IUserDao {
 
 	public List<User> getUsersForGrouping(String groupingId) {
 		List<User> list = new ArrayList<User>();
-		try {
-			list = sqlSession.selectList("getUsersForGrouping", groupingId);
-		} catch (Exception e) {
-			System.out.print(e);
-		}
+		list = sqlSession.selectList("getUsersForGrouping", groupingId);
 		return list;
 	}
 

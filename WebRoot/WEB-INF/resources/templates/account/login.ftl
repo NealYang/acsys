@@ -16,6 +16,7 @@
     <script src="/includes/js/respond.min.js"></script>
     <![endif]-->
 </head>
+
 <body>
 	<div class="container">
 		<form class="form-signin" id="signForm" name="signForm" action="login!submit" role="form" method="post">
@@ -55,6 +56,7 @@
 			<button id="sign-in" class="btn btn-lg btn-success btn-block" type="submit">Sign In</button>
 		</form>
 	</div>
+	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="/includes/js/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->

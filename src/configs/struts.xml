@@ -50,6 +50,7 @@
 		
 		<action name="bill" class="com.acsys.bill.action.BillAction" method="input">
 			<result name="input" type="freemarker">/WEB-INF/resources/templates/bill/bill.ftl</result>
+			<result name="success" type="redirect">/bill</result>
 		</action>
 		
 		<action name="grouping" class="com.acsys.grouping.action.GroupingAction" method="input">

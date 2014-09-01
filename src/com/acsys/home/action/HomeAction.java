@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import com.acsys.account.model.User;
 import com.acsys.account.service.IUserService;
 import com.acsys.bill.model.Bill;
+import com.acsys.bill.service.IBillService;
+import com.acsys.common.Utils;
 import com.acsys.core.BaseAction;
 import com.acsys.grouping.model.Grouping;
 import com.acsys.grouping.service.IGroupingService;
@@ -26,15 +28,23 @@ public class HomeAction extends BaseAction {
 	private IGroupingService groupingService;
 	@Resource
 	private IUserService userService;
+	@Resource
+	private IBillService billService;
 
 	@Override
 	public String execute() {
 		getAllGroupings();
 		if (groupings != null && groupings.size() > 0) {
-			groupingId = groupings.get(0).getId();
+			if (Utils.isEmpty(groupingId)) {
+				groupingId = groupings.get(0).getId();
+			}
 		}
 		getUsersForGrouping();
-		getAllBills();
+		if (!Utils.isEmpty(groupingId)) {
+			getBillsByGroupingId();
+		} else {
+			getAllBills();
+		}
 		return SUCCESS;
 	}
 
@@ -46,11 +56,20 @@ public class HomeAction extends BaseAction {
 		users = userService.getUsersForGrouping(groupingId);
 	}
 
+	private void getBillsByGroupingId() {
+		bills = billService.getBillsByGroupingId(groupingId);
+	}
+
 	private void getAllBills() {
+		bills = billService.getAllBills();
 	}
 
 	public void setGroupingId(String groupingId) {
 		this.groupingId = groupingId;
+	}
+
+	public String getGroupingId() {
+		return groupingId;
 	}
 
 	public List<Grouping> getGroupings() {

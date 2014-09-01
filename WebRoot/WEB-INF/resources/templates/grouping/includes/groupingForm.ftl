@@ -4,7 +4,7 @@
 			<div class="form-group">
 				<label for="group-name">Grouping Name</label>
 				<input hidden=true id="group-id" name="grouping.id" value="${grouping.id!}"/>
-				<input type="text" class="form-control" id="group-name" name="grouping.name" value="${grouping.name!}" disabled>
+				<input type="text" class="form-control" id="group-name" name="grouping.name" value="${grouping.name!}" disabled />
 			</div>
 		</div>
 		<div class="col-md-4">
@@ -69,14 +69,14 @@
 		$(function() {
 			$("#save").click(function() {
 				$.ajax({
-					async : false,
-					cache : false,
-					type : "POST",
-					url : "/acsys/grouping!saveGrouping",
-					data : $('#groupingForm').serialize(),
-					error : function(request) {
+					async: false,
+					cache: false,
+					type: "POST",
+					url: "/acsys/grouping!saveGrouping",
+					data: $('#groupingForm').serialize(),
+					error: function(request) {
 					},
-					success : function(msg) {
+					success: function(msg) {
 						$(".content-form").html(msg);
 					}
 				});

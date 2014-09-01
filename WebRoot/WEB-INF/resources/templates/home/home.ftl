@@ -8,8 +8,8 @@
 
 <!-- Bootstrap -->
 <link href="/includes/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/custom.css" rel="stylesheet">
 <link href="/includes/DataTables-1.10.2/examples/resources/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+<link href="/css/common.css" rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -89,13 +89,19 @@
 						<tbody>
 							<#list bills as bill>
 								<tr>
-									<td>2014-06-12</td>
-									<td><a href="#">Frank</a></td>
-									<td><a href="#">Harry</a> <a href="#">Wisdom</a> <a
-										href="#">Claude</a> <a href="#">Ben</a> <a href="#">Norbert</a></td>
-									<td>å®¢å®¶</td>
-									<td>90.0</td>
-									<td>10.172.97.162</td>
+									<td>${bill.date?string("yyyy-MM-dd")}</td>
+									<td><a href="#">${bill.payUserName!}</a></td>
+									<td>
+										<#assign attendants = bill.attendants/>
+										<#if attendants?exists>
+											<#list attendants as attendant>
+												<a href="#">${attendant.userName}</a>
+											</#list>
+										</#if>
+									</td>
+									<td>${bill.place!}</td>
+									<td>${bill.amount!}</td>
+									<td>${bill.ipAddr!}</td>
 									<td><a href="#">edit</a></td>
 								</tr>
 							</#list>
@@ -105,10 +111,29 @@
 			</div>
 		</div>
 	</div>
+	<form hidden="true" id="form-hidden" action="home" method="post">
+		<input id="input-hidden" name="groupingId" value="" />
+	</form>
 
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/includes/js/bootstrap.min.js"></script>
-	<script src="/includes/js/jquery.cookie.js"></script>
 	<script src="/js/common.js"></script>
+	<script type="text/javascript">
+	    (function($){
+	    	<#list groupings as grouping>
+				<#if groupingId?exists && groupingId==grouping.id>
+					<#assign grpIndex=grouping_index />
+					<#break>
+				</#if>
+			</#list>
+			$("#grouping").get(0).selectedIndex = ${grpIndex!0};
+			
+			$("#grouping").change(function() {
+				$("#input-hidden").val($(this).val());
+		    	$("#form-hidden").submit();
+		    	//window.location.href = "/acsys/bill?groupingId="+$(this).val();
+			});
+	    })(jQuery);
+	</script>
 </body>
 </html>

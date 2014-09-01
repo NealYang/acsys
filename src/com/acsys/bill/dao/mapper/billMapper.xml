@@ -11,6 +11,7 @@
 		<result property="payUserName" column="pay_user_name" />
 		<result property="groupingId" column="grouping_id" />
 		<result property="groupingName" column="grouping_name" />
+		<result property="ipAddr" column="ip_addr" />
 		<result property="created" column="created" />
 		<result property="modified" column="modified" />
 		<result property="lastTime" column="last_time" />
@@ -43,13 +44,13 @@
 
 	<insert id="addBill" useGeneratedKeys="true" keyProperty="id">
 		insert
-		into bill (date,place,amount,pay_user_id,pay_user_name,grouping_id,grouping_name,created,modified,last_time,remark,del_flag)
+		into bill (date,place,amount,pay_user_id,pay_user_name,grouping_id,grouping_name,ip_addr,created,modified,last_time,remark,del_flag)
 		values
-		(#{date},#{place},#{amount},#{payUserId},#{payUserName},#{groupingId},#{groupingName},#{created},#{modified},#{lastTime},#{remark},#{delFlag})
+		(#{date},#{place},#{amount},#{payUserId},#{payUserName},#{groupingId},#{groupingName},#{ipAddr},#{created},#{modified},#{lastTime},#{remark},#{delFlag})
 	</insert>
 	
 	<update id="updateBill" parameterType="bill">
-		update bill set date=#{date}, place=#{place}, amount=#{amount}, pay_user_id=#{payUserId}, payUserName=#{pay_user_name}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}, del_flag=#{delFlag}
+		update bill set date=#{date}, place=#{place}, amount=#{amount}, pay_user_id=#{payUserId}, payUserName=#{pay_user_name}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, ip_addr=#{ipAddr}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}, del_flag=#{delFlag}
 		where id=#{id}
 	</update>
 	

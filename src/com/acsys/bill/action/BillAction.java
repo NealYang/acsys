@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import com.acsys.account.model.User;
 import com.acsys.account.service.IUserService;
 import com.acsys.bill.model.Bill;
+import com.acsys.bill.service.IBillService;
 import com.acsys.common.Utils;
 import com.acsys.core.BaseAction;
 import com.acsys.grouping.model.Grouping;
@@ -18,15 +19,18 @@ import com.acsys.grouping.service.IGroupingService;
  * @date Jul 30, 2014
  */
 public class BillAction extends BaseAction {
+	private Bill bill;
 	private String groupingId;
 	private List<Grouping> groupings = new ArrayList<Grouping>();
 	private List<User> users = new ArrayList<User>();
-	private Bill bill;
+	private List<Bill> bills = new ArrayList<Bill>();
 
 	@Resource
 	private IGroupingService groupingService;
 	@Resource
 	private IUserService userService;
+	@Resource
+	private IBillService billService;
 
 	@Override
 	public String input() {
@@ -41,7 +45,24 @@ public class BillAction extends BaseAction {
 	}
 
 	public String submit() {
+		if (Utils.isEmpty(bill.getId())) {
+			String ipAddr = this.request.getRemoteAddr();
+			bill.setIpAddr(ipAddr);
+			billService.addBill(bill);
+		} else {
+			// billService.updateBill(bill, delAttendantIds, attendants);
+		}
+		return SUCCESS;
+	}
+
+	public String billById() {
+		bill = billService.getBillById(bill.getId());
 		return INPUT;
+	}
+
+	public String billsByGroupingId() {
+		bills = billService.getBillsByGroupingId(groupingId);
+		return SUCCESS;
 	}
 
 	private void getAllGroupings() {
@@ -50,6 +71,14 @@ public class BillAction extends BaseAction {
 
 	private void getUsersForGrouping() {
 		users = userService.getUsersForGrouping(groupingId);
+	}
+
+	public Bill getBill() {
+		return bill;
+	}
+
+	public void setBill(Bill bill) {
+		this.bill = bill;
 	}
 
 	public void setGroupingId(String groupingId) {
@@ -68,11 +97,7 @@ public class BillAction extends BaseAction {
 		return users;
 	}
 
-	public Bill getBill() {
-		return bill;
-	}
-
-	public void setBill(Bill bill) {
-		this.bill = bill;
+	public List<Bill> getBills() {
+		return bills;
 	}
 }
