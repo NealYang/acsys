@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//WebRoot/WEB-INF/resources/templates/bill/bill.ftl=UTF-8
+encoding//WebRoot/WEB-INF/resources/templates/grouping/grouping.ftl=UTF-8
 encoding//WebRoot/WEB-INF/resources/templates/home/home.ftl=UTF-8
 encoding//src/com/acsys/common/DateConverter.java=UTF-8
 encoding//src/com/acsys/core/SpringContext.java=UTF-8

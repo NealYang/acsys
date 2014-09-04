@@ -1,6 +1,7 @@
 package com.acsys.grouping.action;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,6 +21,9 @@ import com.opensymphony.xwork2.Preparable;
 public class GroupingAction extends BaseAction implements Preparable {
 	private String groupingId;
 	private Grouping grouping = new Grouping();
+	private String addUserIds;// xxx,xxx,xxx,
+	private String delUserIds;// xxx,xxx,xxx,
+
 	private List<Grouping> groupings;
 	private List<User> users = new ArrayList<User>();
 	private List<User> allUsers = new ArrayList<User>();
@@ -47,6 +51,9 @@ public class GroupingAction extends BaseAction implements Preparable {
 		if (!Utils.isEmpty(groupingId)) {
 			grouping = groupingService.getGroupingById(groupingId);
 			setUsers();
+		} else {
+			// For add
+			grouping.setCreated(new Date());
 		}
 		return "grouping-form";
 	}
@@ -67,28 +74,58 @@ public class GroupingAction extends BaseAction implements Preparable {
 
 	public String saveGrouping() {
 		if (!Utils.isEmpty(grouping.getId())) {
-			// TODO:add delete users
+			trimUserIds();
+			String[] adds = Utils.isEmpty(addUserIds) ? null : addUserIds.split(",");
+			String[] dels = Utils.isEmpty(delUserIds) ? null : delUserIds.split(",");
 			groupingId = grouping.getId();
-			groupingService.updateGrouping(grouping, null, null);
+			groupingService.updateGrouping(grouping, dels, adds);
+			setUsers();
+			return "grouping-form";
 		} else {
-			// TODO:add users
-			groupingId = groupingService.addGrouping(grouping.getName(), grouping.getRemark(), null);
+			String[] adds = Utils.isEmpty(addUserIds) ? null : addUserIds.split(",");
+			groupingId = groupingService.addGrouping(grouping.getName(), grouping.getRemark(), adds);
+			return SUCCESS;
 		}
-		setUsers();
-		return "grouping-form";
 	}
 
 	public String deleteGrouping() {
 		if (Utils.isEmpty(groupingId)) {
-			return INPUT;
+			return SUCCESS;
 		}
 
 		groupingService.deleteGrouping(groupingId);
-		return INPUT;
+		return SUCCESS;
 	}
 
 	private void getAllGroupings() {
 		groupings = groupingService.getAllGroupings();
+	}
+
+	private void trimUserIds() {
+		String[] adds = Utils.isEmpty(addUserIds) ? null : addUserIds.split(",");
+		String addStrings = "";
+		String[] dels = Utils.isEmpty(delUserIds) ? null : delUserIds.split(",");
+		String delStrings = "";
+		if (!Utils.isEmpty(adds)) {
+			for (String string : adds) {
+				if (!Utils.isEmpty(addStrings)) {
+					addStrings += "," + string.trim();
+				} else {
+					addStrings += string.trim();
+				}
+			}
+		}
+		if (!Utils.isEmpty(dels)) {
+			for (String string : dels) {
+				if (!Utils.isEmpty(delStrings)) {
+					delStrings += "," + string.trim();
+				} else {
+					delStrings += string.trim();
+				}
+			}
+		}
+		this.addUserIds = addStrings;
+		this.delUserIds = delStrings;
 	}
 
 	public String getGroupingId() {
@@ -105,6 +142,14 @@ public class GroupingAction extends BaseAction implements Preparable {
 
 	public void setGrouping(Grouping grouping) {
 		this.grouping = grouping;
+	}
+
+	public void setAddUserIds(String addUserIds) {
+		this.addUserIds = addUserIds;
+	}
+
+	public void setDelUserIds(String delUserIds) {
+		this.delUserIds = delUserIds;
 	}
 
 	public List<Grouping> getGroupings() {

@@ -39,7 +39,7 @@
 
 <#import "../dashboard/dashboard.ftl" as dashboard />
 
-<body id="homepage">
+<body id="home">
 	<@dashboard.common />
 	<div class="container-fluid">
 		<div class="row">
@@ -89,7 +89,7 @@
 						<tbody>
 							<#list bills as bill>
 								<tr>
-									<td>${bill.date?string("yyyy-MM-dd")}</td>
+									<td>${(bill.date?string("yyyy-MM-dd"))!}</td>
 									<td><a href="#">${bill.payUserName!}</a></td>
 									<td>
 										<#assign attendants = bill.attendants/>

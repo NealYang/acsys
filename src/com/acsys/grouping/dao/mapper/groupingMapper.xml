@@ -20,7 +20,7 @@
 	</select>
 	
 	<select id="getAllGroupings" resultType="List" resultMap="groupingMap">
-		select * from grouping order by name
+		select * from grouping where del_flag='0' order by name
 	</select>
 
 	<insert id="addGrouping" useGeneratedKeys="true" keyProperty="id">

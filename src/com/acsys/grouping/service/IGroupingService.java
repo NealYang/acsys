@@ -17,7 +17,7 @@ public interface IGroupingService {
 
 	public int updateGroupingUser(Grouping grouping, String[] delUserIds, String[] addUserIds);
 
-	public void updateGroupingBase(Grouping grouping);
+	public void updateGroupingBase(Grouping grouping, int userNum);
 
 	public void updateGrouping(Grouping grouping, String[] delUserIds, String[] addUserIds);
 

@@ -18,8 +18,11 @@
 		select * from user where id=#{id}
 	</select>
 	
-	<select id="getUserByIds" parameterType="String" resultMap="userMap">
-		select * from user where id in #{ids}
+	<select id="getUserByIds" parameterType="String" resultType="List" resultMap="userMap">
+		select * from user where id in
+		<foreach item="id" index="index" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
 	</select>
 
 	<select id="getUserByEmail" parameterType="String" resultType="List" resultMap="userMap">

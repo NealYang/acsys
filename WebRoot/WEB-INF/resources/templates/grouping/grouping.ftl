@@ -20,7 +20,7 @@
 
 <#import "../dashboard/dashboard.ftl" as dashboard />
 
-<body>
+<body id="grouping">
 	<@dashboard.common />
 	<div class="container-fluid">
 		<div class="col-sm-3 col-md-2 sidebar">
@@ -45,9 +45,46 @@
 				<div class="row">
 					<h2 class="col-md-10">Manage Grouping</h2>
 					<div class="col-md-offset-10">
-						<button type="button" class="btn btn-primary">Add</button>
-						<button id="edit" type="button" class="btn btn-link">Edit</button>
-						<button type="button" class="btn btn-link">Delete</button>
+						<button type="button" class="btn btn-primary add-btn">Add</button>
+						<button type="button" class="btn btn-link edit-btn">Edit</button>
+						<button type="button" class="btn btn-link delete-btn" data-toggle="modal" data-target=".bs-example-modal-sm">Delete</button>
+						<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="mySmallModalLabel">Delete Confirm</h4>
+									</div>
+									<div class="modal-body">Are you sure want to delete the group?</div>
+									<div class="spinner hide">
+										<div class="spinner-container container1">
+											<div class="circle1"></div>
+											<div class="circle2"></div>
+											<div class="circle3"></div>
+											<div class="circle4"></div>
+										</div>
+										<div class="spinner-container container2">
+											<div class="circle1"></div>
+											<div class="circle2"></div>
+											<div class="circle3"></div>
+											<div class="circle4"></div>
+										</div>
+										<div class="spinner-container container3">
+											<div class="circle1"></div>
+											<div class="circle2"></div>
+											<div class="circle3"></div>
+											<div class="circle4"></div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" id="delete-confirm">Yes</button>
+										<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

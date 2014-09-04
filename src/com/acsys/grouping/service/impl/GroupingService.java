@@ -106,7 +106,11 @@ public class GroupingService implements IGroupingService {
 			}
 
 			String groupingIds = user.getGroupingIds();
-			groupingIds += grouping.getId() + ",";
+			if (!Utils.isEmpty(groupingIds)) {
+				groupingIds += grouping.getId() + ",";
+			} else {
+				groupingIds = grouping.getId() + ",";
+			}
 			user.setGroupingIds(groupingIds);
 
 			user.setModified(new Date());
@@ -120,11 +124,12 @@ public class GroupingService implements IGroupingService {
 		return userNum;
 	}
 
-	public void updateGroupingBase(Grouping grouping) {
+	public void updateGroupingBase(Grouping grouping, int userNum) {
 		if (Utils.isEmpty(grouping) || Utils.isEmpty(grouping.getId())) {
 			return;
 		}
 
+		grouping.setMemberNum(userNum);
 		grouping.setModified(new Date());
 		grouping.setLastTime(new Date());
 		groupingDao.updateGrouping(grouping);
@@ -132,7 +137,7 @@ public class GroupingService implements IGroupingService {
 
 	public void updateGrouping(Grouping grouping, String[] delUserIds, String[] addUserIds) {
 		int userNum = this.updateGroupingUser(grouping, delUserIds, addUserIds);
-		this.updateGroupingBase(grouping);
+		this.updateGroupingBase(grouping, userNum);
 	}
 
 	public void deleteGrouping(String groupingId) {
@@ -148,15 +153,20 @@ public class GroupingService implements IGroupingService {
 		grouping.setModified(new Date());
 		grouping.setLastTime(new Date());
 
-		String[] userIds = null;
+		String userIds = "";
 		List<User> users = userService.getUsersForGrouping(groupingId);
+
 		if (!Utils.isEmpty(users)) {
 			for (int i = 0; i < users.size(); i++) {
-				userIds[i] = users.get(i).getId();
+				if (Utils.isEmpty(userIds)) {
+					userIds += users.get(i).getId();
+				} else {
+					userIds += "," + users.get(i).getId();
+				}
 			}
 		}
 
-		this.updateGroupingBase(grouping);
-		this.updateGroupingUser(grouping, userIds, null);
+		this.updateGroupingUser(grouping, userIds.split(","), null);
+		this.updateGroupingBase(grouping, 0);
 	}
 }

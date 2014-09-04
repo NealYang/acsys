@@ -18,7 +18,7 @@
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="home">Home</a></li>
+					<li><a href="home">Home</a></li>
 					<li><a href="bill">Bill</a></li>
 					<li><a href="grouping">Manage Grouping</a></li>
 					<li><a href="account/logout">Log Out</a></li>

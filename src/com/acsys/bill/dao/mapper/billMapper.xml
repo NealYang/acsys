@@ -35,11 +35,11 @@
 	</select>
 	
 	<select id="getBillsByGroupingId" resultType="List" resultMap="billMap">
-		select * from bill where grouping_id =#{groupingId}
+		select * from bill where grouping_id =#{groupingId} and del_flag='0'
 	</select>
 	
 	<select id="getAllBills" resultType="List" resultMap="billMap">
-		select * from bill order by grouping_id,pay_user_name;
+		select * from bill where del_flag='0' order by grouping_name,pay_user_name;
 	</select>
 
 	<insert id="addBill" useGeneratedKeys="true" keyProperty="id">
@@ -60,7 +60,7 @@
 	</select>
 	
 	<select id="getAttendantByBillId" resultType="List" resultMap="attendantMap">
-		select * from attendant where bill_id=#{id} and del_flag="0"
+		select * from attendant where bill_id=#{id} and del_flag='0'
 	</select>
 	
 	<insert id="addAttendant" useGeneratedKeys="true" keyProperty="id">

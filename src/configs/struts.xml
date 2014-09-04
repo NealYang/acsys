@@ -54,8 +54,8 @@
 		</action>
 		
 		<action name="grouping" class="com.acsys.grouping.action.GroupingAction" method="input">
+			<result name="success" type="redirect">/grouping</result>
 			<result name="input" type="freemarker">/WEB-INF/resources/templates/grouping/grouping.ftl</result>
-			<result name="grouping-list" type="freemarker">/WEB-INF/resources/templates/grouping/includes/groupingList.ftl</result>
 			<result name="grouping-form" type="freemarker">/WEB-INF/resources/templates/grouping/includes/groupingForm.ftl</result>
 		</action>
 	</package>

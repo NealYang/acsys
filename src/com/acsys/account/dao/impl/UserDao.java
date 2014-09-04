@@ -25,7 +25,7 @@ public class UserDao implements IUserDao {
 		return user;
 	}
 
-	public List<User> getUserByIds(String ids) {
+	public List<User> getUserByIds(String[] ids) {
 		List<User> list = sqlSession.selectList("getUserByIds", ids);
 		return list;
 	}

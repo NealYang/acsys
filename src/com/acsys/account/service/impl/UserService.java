@@ -36,7 +36,7 @@ public class UserService implements IUserService {
 		if (ids == null || ids.length < 1) {
 			return new ArrayList<User>();
 		}
-		return userDao.getUserByIds(Utils.toMySQLString(ids));
+		return userDao.getUserByIds(ids);
 	}
 
 	public User getUserByEmail(String email) {

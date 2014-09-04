@@ -11,7 +11,7 @@ import com.acsys.account.model.User;
 public interface IUserDao {
 	public User getUserById(String id);
 
-	public List<User> getUserByIds(String ids);
+	public List<User> getUserByIds(String[] ids);
 
 	public User getUserByEmail(String email);
 

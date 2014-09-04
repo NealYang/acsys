@@ -7,7 +7,8 @@
 <title>New Bill</title>
 
 <!-- Bootstrap -->
-<link href="/includes/css/bootstrap.min.css" rel="stylesheet">
+<link href="/includes/css/bootstrap.css" rel="stylesheet">
+<link href="/includes/css/bootstrap-datetimepicker.css" rel="stylesheet">
 <link href="/includes/DataTables-1.10.2/examples/resources/bootstrap/3/dataTables.bootstrap.css"  rel="stylesheet">
 <link href="/css/common.css" rel="stylesheet">
 <link href="/css/bill.css" rel="stylesheet">
@@ -20,24 +21,32 @@
     <![endif]-->
     
     <!-- jQuery necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/includes/js/jquery.min.js"></script>
+    <script src="/includes/js/jquery-2.1.1.js"></script>
+    <script src="/includes/js/bootstrap-datetimepicker.js"></script>
     <script src="/includes/DataTables-1.10.2/media/js/jquery.dataTables.js"></script>
     <script src="/includes/DataTables-1.10.2/examples/resources/bootstrap/3/dataTables.bootstrap.js"></script>
     <script>
         $(document).ready(function() {
-            var table2 = $('#amount-list').DataTable({
+            $('#amount-list').DataTable({
                 "bFilter": false,
                 "bLengthChange": false,
                 "bPaginate": false,
                 "bInfo": false
             });
+		    $('.form_datetime').datetimepicker({
+		    	format: "mm/dd/yyyy",
+		    	minView: 2,
+		    	autoclose: true,
+		    	todayHighlight: true,
+		    	todayBtn: true
+		    }).datetimepicker('update', new Date());
         });
     </script>
 </head>
 
 <#import "../dashboard/dashboard.ftl" as dashboard />
 
-<body>
+<body id="bill">
 	<@dashboard.common />
 	<div class="container-fluid">
 		<div class="row">
@@ -74,7 +83,11 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="date">Date</label>
-								<input type="date" class="form-control" name="bill.date" id="date" />
+								<!--input type="date" class="form-control" name="bill.date" id="date" /-->
+								<div class="input-append input-group date form_datetime">
+									<input id="date" size="16" type="text" class="form-control" name="bill.date" value="" readonly />
+									<span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="payer">Payer</label>
@@ -152,7 +165,8 @@
 	</form>
 	
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="/includes/js/bootstrap.min.js"></script>
+	<script src="/includes/js/bootstrap.js"></script>
+	<script src="/js/common.js"></script>
 	<script src="/js/bill.js"></script>
 	<script type="text/javascript">
 	    (function($){
