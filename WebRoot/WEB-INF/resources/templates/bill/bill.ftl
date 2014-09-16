@@ -8,6 +8,7 @@
 
 <!-- Bootstrap -->
 <link href="/includes/css/bootstrap.css" rel="stylesheet">
+<link href="/includes/css/jquery.qtip.css" rel="stylesheet">
 <link href="/includes/css/bootstrap-datetimepicker.css" rel="stylesheet">
 <link href="/includes/DataTables-1.10.2/examples/resources/bootstrap/3/dataTables.bootstrap.css"  rel="stylesheet">
 <link href="/css/common.css" rel="stylesheet">
@@ -83,7 +84,6 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="date">Date</label>
-								<!--input type="date" class="form-control" name="bill.date" id="date" /-->
 								<div class="input-append input-group date form_datetime">
 									<input id="date" size="16" type="text" class="form-control" name="bill.date" value="" readonly />
 									<span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -131,30 +131,37 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label>
-							Attendant&nbsp;<span id="amount-error" style="color: red;font-size: 12px;"></span>
-						</label>
-						<div class="list-group list-overflow">
-							<#list users as user>
-								<div class="list-group-item checkbox">
-									<label style="width: 110px;">
-										<input type="checkbox" class="attendant-checkbox" />
-										<input type="text" hidden=true value="${user.id!}" />&nbsp;&nbsp;${user.name!}
-									</label>
-									<input type="text" class="user-amount bootstrap-input" disabled="disabled" />
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>
+									Attendant&nbsp;<span id="amount-error" style="color: red;font-size: 12px;"></span>
+								</label>
+								<div id="attendants" class="list-overflow">
+									<#list users as user>
+										<div class="list-overflow-item checkbox">
+											<label title="${user.name!}">
+												<input type="checkbox" class="attendant-checkbox" />
+												<input type="text" hidden=true value="${user.id!}" />
+												${user.name!}
+											</label>
+											<input type="text" class="user-amount bootstrap-input" disabled="disabled" />
+										</div>
+									</#list>
 								</div>
-							</#list>
+								<div hidden=true id="attendants-div">
+								</div>
+							</div>
 						</div>
-						<div hidden=true id="attendants-div">
+						<div class="col-md-8">
+							<div class="form-group">
+								<label for="comment">Comment</label>
+								<textarea id="comment" name="bill.remark" class="form-control" rows="5"></textarea>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="comment">Comment</label>
-						<textarea id="comment" name="bill.remark" class="form-control" rows="2"></textarea>
 					</div>
 					<div class="btn-group2">
-						<button type="submit" class="btn btn-primary">Save</button>
+						<button id="save-btn" type="button" class="btn btn-primary">Save</button>
 					</div>
 				</form>
 			</div>
@@ -166,6 +173,8 @@
 	
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/includes/js/bootstrap.js"></script>
+	<script src="/includes/js/jquery.qtip.js"></script>
+	<script src="/includes/js/imagesloaded.pkg.min.js"></script>
 	<script src="/js/common.js"></script>
 	<script src="/js/bill.js"></script>
 	<script type="text/javascript">

@@ -20,8 +20,14 @@ public class UserDao implements IUserDao {
 	@Resource
 	private SqlSession sqlSession;
 
-	public User getUserById(String id) {
-		User user = sqlSession.selectOne("getUserById", id);
+	public User getUserById(String id) throws Exception {
+		User user = null;
+		try {
+			user = sqlSession.selectOne("getUserById", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("getUserById: id=" + id);
+		}
 		return user;
 	}
 

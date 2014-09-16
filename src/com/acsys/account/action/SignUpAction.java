@@ -96,7 +96,7 @@ public class SignUpAction extends BaseAction implements Preparable {
 		return INPUT;
 	}
 
-	public String submit() {
+	public String submit() throws Exception {
 		String id = userService.addUser(email, password, groupingId);
 
 		// if (Utils.isEmpty(id)) {

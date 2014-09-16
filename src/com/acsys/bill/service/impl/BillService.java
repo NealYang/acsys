@@ -30,7 +30,7 @@ public class BillService implements IBillService {
 	@Resource
 	private IUserService userService;
 
-	public Bill getBillById(String id) {
+	public Bill getBillById(String id) throws Exception {
 		if (Utils.isEmpty(id)) {
 			return null;
 		}
@@ -49,7 +49,7 @@ public class BillService implements IBillService {
 		return list;
 	}
 
-	public String addBill(Bill bill) {
+	public String addBill(Bill bill) throws Exception {
 		if (Utils.isEmpty(bill)) {
 			return "";
 		}
@@ -89,7 +89,7 @@ public class BillService implements IBillService {
 		return billId;
 	}
 
-	public void updateBill(Bill bill, String[] delAttendantIds, List<Attendant> addAttendants) {
+	public void updateBill(Bill bill, String[] delAttendantIds, List<Attendant> addAttendants) throws Exception {
 		if (Utils.isEmpty(bill)) {
 			return;
 		}

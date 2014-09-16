@@ -20,6 +20,9 @@
 	<filter-mapping>
 		<filter-name>struts2</filter-name>
 		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 	<!-- Struts2 End -->
 
@@ -35,6 +38,16 @@
 	<!-- Spring End -->
 
 	<welcome-file-list>
-		<welcome-file>/WEB-INF/assets/index.jsp</welcome-file>
+		<welcome-file>/WEB-INF/assets/index.html</welcome-file>
 	</welcome-file-list>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/assets/common/404.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/assets/common/500.jsp</location>
+	</error-page>
 </web-app>

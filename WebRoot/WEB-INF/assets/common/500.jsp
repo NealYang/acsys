@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Error</title>
+	<title>500 Internal Server Error</title>
+	<meta http-equiv="refresh" content="5;URL=home">
 	<meta name="description" content="Accounting System" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     
@@ -36,9 +37,9 @@
 	<div class="content">
 		<div class="error-box">
 			<div class="hd">
-				<div class="title">ERROR</div>
-				<div class="ct">Sorry, we are unable to process your request at this time.</div>
-				<a class="ct" href="/acsys/home">Go Back Home</a>
+				<div class="title">500</div>
+				<div class="ct">Sorry, this page didn't load properly. You will be redirected to our home page in 5 seconds.</div>
+				<a class="ct" href="/acsys/home">Go Back Now</a>
 			</div>
 		</div>
 	</div>

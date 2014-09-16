@@ -2,9 +2,9 @@
  * Bill
  */
 .list-overflow {
-	height: 140px;
+	height: 132px;
 	overflow-y: auto;
-	overflow-x: invisible;
+	overflow-x: hidden;
 	border: 1px solid #ddd;
 }
 
@@ -18,8 +18,21 @@
     border-bottom-right-radius: 0px;
 }
 
-.checkbox {
-	margin-top: 0px;
+.list-overflow-item {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	display: block;
+	margin: -1px;
+	padding: 10px 15px;
+	position: relative;
+}
+
+.list-overflow-item label {
+	width: 110px;
+}
+
+#comment {
+	resize: none;
 }
 
 .user-amount {

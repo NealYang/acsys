@@ -8,7 +8,9 @@
 
 <!-- Bootstrap -->
 <link href="/includes/css/bootstrap.min.css" rel="stylesheet">
+<link href="/includes/css/jquery.qtip.css" rel="stylesheet">
 <link href="/css/common.css" rel="stylesheet">
+<link href="/css/grouping.css" rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -97,6 +99,8 @@
 	<script src="/includes/js/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/includes/js/bootstrap.min.js"></script>
+	<script src="/includes/js/jquery.qtip.js"></script>
+	<script src="/includes/js/imagesloaded.pkg.min.js"></script>
 	<script src="/js/common.js"></script>
 	<script src="/js/grouping.js"></script>
 	<script type="text/javascript">

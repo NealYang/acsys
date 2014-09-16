@@ -44,12 +44,15 @@ $(".nav-sidebar li").click(function(){
 	$.ajax({
 		async:false,
 		url: "/acsys/grouping!loadGrouping?groupingId="+id,
-		cache:false,
-		context: document.body,
-		beforeSend :function(){
+		error: function(XMLHttpRequest, status) {
+			window.location.href="/acsys/error";
 		},
-		success: function(msg){
-			$(".content-form").html(msg);
+		success: function(msg, status) {
+			if("loginFirst"===msg.trim()) {
+				window.location.href="/acsys/account/login";
+			} else {
+				$(".content-form").html(msg);
+			}
 		}
 	});
 });
@@ -141,4 +144,46 @@ function setAttendants() {
 	
 	$("#addUserIds").val(addUserIds);
 	$("#delUserIds").val(delUserIds);
+}
+
+function validateForm() {
+	var result = validateGroupingName();
+	result = validateMember() && result;
+	
+	if(!result) {
+		$(".error").qtip("destroy");
+		$(".error").qtip({
+			position: {my: "left center", at: "right center"},
+			style: {classes: "qtip-shadow qtip-rounded qtip-red"}
+		});
+		
+		handleErrorMsg($("#groupingForm"));
+		$("#save").enabledBtn();
+	} else {
+		$("#error").remove();
+	}
+	
+	return result;
+}
+
+function validateGroupingName() {
+    var errorMsg = "Please enter a grouping name.";
+    if(!!!$("#group-name").val()) {
+        setErrorMsg($("#group-name"), errorMsg);
+        return false;
+    } else {
+        removeError($("#group-name"));
+        return true;
+    }
+}
+
+function validateMember() {
+    var errorMsg = "Please add at least one member.";
+    if($("#attendant").children().length < 1) {
+        setErrorMsg($("#attendant"), errorMsg);
+        return false;
+    } else {
+        removeError($("#attendant"));
+        return true;
+    }
 }

@@ -79,6 +79,7 @@ public class GroupingAction extends BaseAction implements Preparable {
 			String[] dels = Utils.isEmpty(delUserIds) ? null : delUserIds.split(",");
 			groupingId = grouping.getId();
 			groupingService.updateGrouping(grouping, dels, adds);
+			grouping = groupingService.getGroupingById(groupingId);
 			setUsers();
 			return "grouping-form";
 		} else {

@@ -18,7 +18,7 @@ public class DateConverter extends DefaultTypeConverter {
 			if (toType == Date.class) {
 				// 因为在Struts2会把表单传过来的非字符串数据转换为String[],所以这里得取第一个值
 				String dataStr = ((String[]) value)[0];
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat format = new SimpleDateFormat("mm/dd/yyyy");
 				return format.parse(dataStr);
 			} else if (toType == String.class) {
 				String dataStr = ((Date) value).toString();

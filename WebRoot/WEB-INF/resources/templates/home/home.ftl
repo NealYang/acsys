@@ -83,26 +83,27 @@
 								<th>Place</th>
 								<th>Amount</th>
 								<th>Writer's IP</th>
-								<th>Operation</th>
+								<!--th>Operation</th-->
 							</tr>
 						</thead>
 						<tbody>
 							<#list bills as bill>
 								<tr>
 									<td>${(bill.date?string("yyyy-MM-dd"))!}</td>
-									<td><a href="#">${bill.payUserName!}</a></td>
+									<td><div>${bill.payUserName!}</div></td>
 									<td>
 										<#assign attendants = bill.attendants/>
 										<#if attendants?exists>
 											<#list attendants as attendant>
-												<a href="#">${attendant.userName}</a>
+												<a title="${attendant.amount}">${attendant.userName}</a>
+												&nbsp;
 											</#list>
 										</#if>
 									</td>
 									<td>${bill.place!}</td>
 									<td>${bill.amount!}</td>
 									<td>${bill.ipAddr!}</td>
-									<td><a href="#">edit</a></td>
+									<!--td><a href="bill!edit?billId=${bill.id}">edit</a></td-->
 								</tr>
 							</#list>
 						</tbody>

@@ -10,13 +10,13 @@ import com.acsys.bill.model.Bill;
  * @date Aug 20, 2014
  */
 public interface IBillService {
-	public Bill getBillById(String id);
+	public Bill getBillById(String id) throws Exception;
 
 	public List<Bill> getBillsByGroupingId(String groupingId);
 
 	public List<Bill> getAllBills();
 
-	public String addBill(Bill bill);
+	public String addBill(Bill bill) throws Exception;
 
-	public void updateBill(Bill bill, String[] delAttendantIds, List<Attendant> addAttendants);
+	public void updateBill(Bill bill, String[] delAttendantIds, List<Attendant> addAttendants) throws Exception;
 }

@@ -17,7 +17,7 @@
 		<div class="col-md-4">
 			<div class="form-group">
 				<label for="create-date">Create Date</label>
-				<input type="text" class="form-control" id="create-date" name="grouping.created" value="${grouping.created?string("yyyy-MM-dd")}" disabled>
+				<input type="text" class="form-control" id="create-date" name="grouping.created" value="${grouping.created?string("mm/dd/yyyy")}" disabled>
 			</div>
 		</div>
 	</div>
@@ -74,27 +74,30 @@
 		$(function() {
 			moveOption();
 			$('#save').on('click', function() {
-				setAttendants();
-				// update
-				if($('#group-id').val() != null && $('#group-id').val() != undefined && $('#group-id').val() != "") {
-					$.ajax({
-						async: false,
-						cache: false,
-						type: "POST",
-						url: "/acsys/grouping!saveGrouping",
-						data: $('#groupingForm').serialize(),
-						error: function(request) {
-						},
-						success: function(msg) {
-							$('.add-btn, .edit-btn, .delete-btn').removeClass("hide");
-							$(".content-form").html(msg);
-							var li = findActiveGrouping();
-							$(li).children().get(0).text = $('#group-name').val();
-						}
-					});
-				// new
-				} else {
-					$('#groupingForm').submit();
+				$("#save").disabledBtn();
+				if(validateForm()) {
+					setAttendants();
+					// update
+					if($('#group-id').val() != null && $('#group-id').val() != undefined && $('#group-id').val() != "") {
+						$.ajax({
+							async: false,
+							cache: false,
+							type: "POST",
+							url: "/acsys/grouping!saveGrouping",
+							data: $('#groupingForm').serialize(),
+							error: function(request) {
+							},
+							success: function(msg) {
+								$('.add-btn, .edit-btn, .delete-btn').removeClass("hide");
+								$(".content-form").html(msg);
+								var li = findActiveGrouping();
+								$(li).children().get(0).text = $('#group-name').val();
+							}
+						});
+					// new
+					} else {
+						$('#groupingForm').submit();
+					}
 				}
 			});
 			$('#cancel').on('click', function(){

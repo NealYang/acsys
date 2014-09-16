@@ -19,8 +19,14 @@ public class BillDao implements IBillDao {
 	@Resource
 	private SqlSession sqlSession;
 
-	public Bill getBillById(String id) {
-		Bill bill = sqlSession.selectOne("getBillById", id);
+	public Bill getBillById(String id) throws Exception {
+		Bill bill = null;
+		try {
+			bill = sqlSession.selectOne("getBillById", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("getBillById: id=" + id);
+		}
 		return bill;
 	}
 

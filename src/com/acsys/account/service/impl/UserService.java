@@ -25,7 +25,7 @@ public class UserService implements IUserService {
 	@Resource
 	private IGroupingDao groupingDao;
 
-	public User getUserById(String id) {
+	public User getUserById(String id) throws Exception {
 		if (Utils.isEmpty(id)) {
 			return null;
 		}

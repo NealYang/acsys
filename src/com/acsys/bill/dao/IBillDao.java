@@ -9,7 +9,7 @@ import com.acsys.bill.model.Bill;
  * @date Aug 19, 2014
  */
 public interface IBillDao {
-	public Bill getBillById(String id);
+	public Bill getBillById(String id) throws Exception;
 
 	public List<Bill> getBillsByGroupingId(String groupingId);
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Error</title>
+	<title>Page Not Found</title>
 	<meta name="description" content="Accounting System" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     
@@ -36,8 +36,8 @@
 	<div class="content">
 		<div class="error-box">
 			<div class="hd">
-				<div class="title">ERROR</div>
-				<div class="ct">Sorry, we are unable to process your request at this time.</div>
+				<div class="title">404</div>
+				<div class="ct">Sorry, we couldn't find the page you're looking for.</div>
 				<a class="ct" href="/acsys/home">Go Back Home</a>
 			</div>
 		</div>

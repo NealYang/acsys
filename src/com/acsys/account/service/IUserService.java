@@ -9,7 +9,7 @@ import com.acsys.account.model.User;
  * @date Aug 6, 2014
  */
 public interface IUserService {
-	public User getUserById(String id);
+	public User getUserById(String id) throws Exception;
 
 	public List<User> getUserByIds(String[] ids);
 
