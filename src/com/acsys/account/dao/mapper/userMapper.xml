@@ -34,7 +34,7 @@
 	</select>
 	
 	<select id="getUsersForGrouping" parameterType="String" resultType="List" resultMap="userMap">
-		select * from user where grouping_ids like '${_parameter},%' or grouping_ids like '%,${_parameter},%'
+		select * from user where grouping_ids like '${_parameter},%' or grouping_ids like '%,${_parameter},%' order by name
 	</select>
 
 	<insert id="addUser" useGeneratedKeys="true" keyProperty="id">
