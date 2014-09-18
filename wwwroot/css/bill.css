@@ -2,7 +2,7 @@
  * Bill
  */
 .list-overflow {
-	height: 132px;
+	height: 188px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	border: 1px solid #ddd;
@@ -28,11 +28,12 @@
 }
 
 .list-overflow-item label {
-	width: 110px;
+	width: 168px;
 }
 
 #comment {
 	resize: none;
+	height: 114px;
 }
 
 .user-amount {

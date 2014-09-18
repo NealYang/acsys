@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $(".add-btn").click(function() {
+    $(".add-btn").on("click", function() {
 		$.ajax({
 			async:false,
 			url: "/acsys/grouping!loadGrouping?groupingId=",
@@ -19,7 +19,7 @@ $(document).ready(function(){
 		});
 	});
 	
-	$(".edit-btn").click(function() {
+	$(".edit-btn").on("click", function() {
 		$(".add-btn, .edit-btn, .delete-btn").addClass("hide");
 		$(".option-btn").attr("disabled", false);
 		$(".form-control").attr("disabled", false);
@@ -28,14 +28,14 @@ $(document).ready(function(){
 		$(".btn-group2").removeClass("hide");
 	});
 	
-	$("#delete-confirm").on("click", function(){
+	$("#delete-confirm").on("click", function() {
 		$(".spinner").removeClass("hide");
 		$("#delete-confirm").attr("disabled", true);
 		window.location.href="acsys/grouping!deleteGrouping?groupingId=" + $("#group-id").val();
 	});
 });
 
-$(".nav-sidebar li").click(function(){
+$(".nav-sidebar li").on("click", function() {
 	$(this).siblings("li").removeClass("active");
     $(this).addClass("active")
     $('.add-btn, .edit-btn, .delete-btn').removeClass("hide");

@@ -28,10 +28,12 @@
             	bLengthChange: false
             });
             var table2 = $('#amount-list').DataTable({
-                "bFilter":   false,
-                "bLengthChange":   false,
-                "bPaginate":   false,
-                "bInfo":     false
+            	"scrollY": "470px",
+                "scrollCollapse": false,
+                "bFilter": false,
+                "bLengthChange": false,
+                "bPaginate": false,
+                "bInfo": false
             });
         });
     </script>
@@ -83,13 +85,13 @@
 								<th>Place</th>
 								<th>Amount</th>
 								<th>Writer's IP</th>
-								<!--th>Operation</th-->
+								<th>Operation</th>
 							</tr>
 						</thead>
 						<tbody>
 							<#list bills as bill>
 								<tr>
-									<td>${(bill.date?string("yyyy-MM-dd"))!}</td>
+									<td>${(bill.date?string("mm/dd/yyyy"))!}</td>
 									<td><div>${bill.payUserName!}</div></td>
 									<td>
 										<#assign attendants = bill.attendants/>
@@ -103,11 +105,52 @@
 									<td>${bill.place!}</td>
 									<td>${bill.amount!}</td>
 									<td>${bill.ipAddr!}</td>
-									<!--td><a href="bill!edit?billId=${bill.id}">edit</a></td-->
+									<td>
+										<a href="bill?billId=${bill.id!}">edit</a>
+										<a class="delBill" href="javascript:void(0)" data-toggle="modal" data-target=".bs-example-modal-sm" value="${bill.id!}">delete</a>
+									</td>
 								</tr>
 							</#list>
 						</tbody>
 					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input id="delBillId" hidden=true />
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="mySmallModalLabel">Delete Confirm</h4>
+				</div>
+				<div class="modal-body">Are you sure want to delete the group?</div>
+				<div class="spinner hide">
+					<div class="spinner-container container1">
+						<div class="circle1"></div>
+						<div class="circle2"></div>
+						<div class="circle3"></div>
+						<div class="circle4"></div>
+					</div>
+					<div class="spinner-container container2">
+						<div class="circle1"></div>
+						<div class="circle2"></div>
+						<div class="circle3"></div>
+						<div class="circle4"></div>
+					</div>
+					<div class="spinner-container container3">
+						<div class="circle1"></div>
+						<div class="circle2"></div>
+						<div class="circle3"></div>
+						<div class="circle4"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="delete-confirm">Yes</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
 				</div>
 			</div>
 		</div>
@@ -119,6 +162,7 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/includes/js/bootstrap.min.js"></script>
 	<script src="/js/common.js"></script>
+	<script src="/js/home.js"></script>
 	<script type="text/javascript">
 	    (function($){
 	    	<#list groupings as grouping>

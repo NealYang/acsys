@@ -18,5 +18,11 @@ public interface IBillService {
 
 	public String addBill(Bill bill) throws Exception;
 
-	public void updateBill(Bill bill, String[] delAttendantIds, List<Attendant> addAttendants) throws Exception;
+	public void updateBill(Bill bill, String[] delAttendantIds) throws Exception;
+
+	public void delBill(String billId) throws Exception;
+
+	public String addAttendant(Attendant attendant, String billId);
+
+	public void delAttendant(String attendantId);
 }

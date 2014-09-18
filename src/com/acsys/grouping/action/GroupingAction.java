@@ -9,7 +9,8 @@ import javax.annotation.Resource;
 import com.acsys.account.model.User;
 import com.acsys.account.service.IUserService;
 import com.acsys.common.Utils;
-import com.acsys.core.BaseAction;
+import com.acsys.core.CommonContext;
+import com.acsys.core.base.action.BaseAction;
 import com.acsys.grouping.model.Grouping;
 import com.acsys.grouping.service.IGroupingService;
 import com.opensymphony.xwork2.Preparable;
@@ -42,7 +43,16 @@ public class GroupingAction extends BaseAction implements Preparable {
 	@Override
 	public String input() {
 		if (groupings != null && groupings.size() > 0) {
-			groupingId = groupings.get(0).getId();
+			User currentUser = CommonContext.getCurrentUser();
+			if (Utils.isEmpty(groupingId) && !Utils.isEmpty(currentUser)) {
+				String groupingIds = currentUser.getGroupingIds();
+				if (!Utils.isEmpty(groupingIds)) {
+					groupingId = groupingIds.substring(0, groupingIds.indexOf(","));
+				}
+			}
+			if (Utils.isEmpty(groupingId)) {
+				groupingId = groupings.get(0).getId();
+			}
 		}
 		return INPUT;
 	}

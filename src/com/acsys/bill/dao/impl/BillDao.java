@@ -45,7 +45,12 @@ public class BillDao implements IBillDao {
 		return bill.getId();
 	}
 
-	public void updateBillBase(Bill bill) {
-		sqlSession.update("updateBill", bill);
+	public void updateBillBase(Bill bill) throws Exception {
+		try {
+			sqlSession.update("updateBill", bill);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("updateBill: bill=" + bill.toString());
+		}
 	}
 }

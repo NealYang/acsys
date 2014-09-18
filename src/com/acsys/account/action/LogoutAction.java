@@ -5,8 +5,8 @@ import javax.annotation.Resource;
 import com.acsys.common.Constants;
 import com.acsys.common.cookie.CookieSpecification;
 import com.acsys.common.cookie.CookieUtils;
-import com.acsys.core.BaseAction;
 import com.acsys.core.CommonContext;
+import com.acsys.core.base.action.BaseAction;
 import com.opensymphony.xwork2.ActionContext;
 
 /**

@@ -10,7 +10,8 @@ import com.acsys.account.service.IUserService;
 import com.acsys.bill.model.Bill;
 import com.acsys.bill.service.IBillService;
 import com.acsys.common.Utils;
-import com.acsys.core.BaseAction;
+import com.acsys.core.CommonContext;
+import com.acsys.core.base.action.BaseAction;
 import com.acsys.grouping.model.Grouping;
 import com.acsys.grouping.service.IGroupingService;
 
@@ -20,10 +21,13 @@ import com.acsys.grouping.service.IGroupingService;
  */
 public class BillAction extends BaseAction {
 	private String billId;
+	private String delAttendantIds;// xxx,xxx,xxx,
 	private Bill bill;
 	private String groupingId;
 	private List<Grouping> groupings = new ArrayList<Grouping>();
 	private List<User> users = new ArrayList<User>();
+
+	private String backParam = "";
 
 	@Resource
 	private IGroupingService groupingService;
@@ -46,7 +50,15 @@ public class BillAction extends BaseAction {
 		if (groupings != null && groupings.size() > 0) {
 			if (!Utils.isEmpty(bill)) {
 				groupingId = bill.getGroupingId();
-			} else if (Utils.isEmpty(groupingId)) {
+			}
+			User currentUser = CommonContext.getCurrentUser();
+			if (Utils.isEmpty(groupingId) && !Utils.isEmpty(currentUser)) {
+				String groupingIds = currentUser.getGroupingIds();
+				if (!Utils.isEmpty(groupingIds)) {
+					groupingId = groupingIds.substring(0, groupingIds.indexOf(","));
+				}
+			}
+			if (Utils.isEmpty(groupingId)) {
 				groupingId = groupings.get(0).getId();
 			}
 		}
@@ -55,14 +67,33 @@ public class BillAction extends BaseAction {
 	}
 
 	public String submit() throws Exception {
+		String idString = "";
+		if (Utils.isEmpty(bill)) {
+			return this.input();
+		}
 		if (Utils.isEmpty(bill.getId())) {
 			String ipAddr = this.request.getRemoteAddr();
 			bill.setIpAddr(ipAddr);
-			billService.addBill(bill);
+			idString = billService.addBill(bill);
 		} else {
-			// billService.updateBill(bill, delAttendantIds, attendants);
+			idString = bill.getId();
+			String ipAddr = this.request.getRemoteAddr();
+			bill.setIpAddr(ipAddr);
+			trimAttendantIds();
+			String[] dels = Utils.isEmpty(delAttendantIds) ? null : delAttendantIds.split(",");
+			billService.updateBill(bill, dels);
 		}
-		return SUCCESS;
+		backParam += this.request.getServletPath() + "?billId=" + idString;
+		return "directURL";
+	}
+
+	public String delBill() throws Exception {
+		if (Utils.isEmpty(billId)) {
+			return "json";
+		}
+		billService.delBill(billId);
+		backParam = "complete";
+		return "json";
 	}
 
 	private void getAllGroupings() {
@@ -73,8 +104,27 @@ public class BillAction extends BaseAction {
 		users = userService.getUsersForGrouping(groupingId);
 	}
 
+	private void trimAttendantIds() {
+		String[] dels = Utils.isEmpty(delAttendantIds) ? null : delAttendantIds.split(",");
+		String delStrings = "";
+		if (!Utils.isEmpty(dels)) {
+			for (String string : dels) {
+				if (!Utils.isEmpty(delStrings)) {
+					delStrings += "," + string.trim();
+				} else {
+					delStrings += string.trim();
+				}
+			}
+		}
+		this.delAttendantIds = delStrings;
+	}
+
 	public void setBillId(String billId) {
 		this.billId = billId;
+	}
+
+	public void setDelAttendantIds(String delAttendantIds) {
+		this.delAttendantIds = delAttendantIds;
 	}
 
 	public Bill getBill() {
@@ -99,5 +149,9 @@ public class BillAction extends BaseAction {
 
 	public List<User> getUsers() {
 		return users;
+	}
+
+	public String getBackParam() {
+		return backParam;
 	}
 }

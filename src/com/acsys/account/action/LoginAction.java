@@ -10,8 +10,8 @@ import com.acsys.common.Constants;
 import com.acsys.common.Utils;
 import com.acsys.common.cookie.CookieSpecification;
 import com.acsys.common.cookie.CookieUtils;
-import com.acsys.core.BaseAction;
 import com.acsys.core.CommonContext;
+import com.acsys.core.base.action.BaseAction;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
 
@@ -24,6 +24,8 @@ public class LoginAction extends BaseAction implements Preparable {
 	private User currUser;
 	private Map session;
 	private String uiError;
+
+	private String preURL;
 
 	// Spring Inject
 	// private IUserService userService = (IUserService) SpringContext.getBean("userService");
@@ -88,6 +90,11 @@ public class LoginAction extends BaseAction implements Preparable {
 			currUser = eUser;
 			setEmailToCookie();
 			setAutoLogin();
+
+			if (this.session.containsKey(Constants.PREURL)) {
+				preURL = String.valueOf(this.session.get(Constants.PREURL));
+				return "directURL";
+			}
 			return SUCCESS;
 		}
 
@@ -145,5 +152,9 @@ public class LoginAction extends BaseAction implements Preparable {
 
 	public String getUiError() {
 		return uiError;
+	}
+
+	public String getPreURL() {
+		return preURL;
 	}
 }

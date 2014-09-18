@@ -35,6 +35,11 @@ public class LoginInterceptor extends AbstractInterceptor {
 
 		HttpServletResponse response = ServletActionContext.getResponse();
 		HttpServletRequest request = ServletActionContext.getRequest();
+		String preUrl = request.getServletPath();
+		if (!Utils.isEmpty(request.getQueryString())) {
+			preUrl += "?" + request.getQueryString();
+		}
+		session.put(Constants.PREURL, preUrl);
 		if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
 			CommonContext.setCurrentUser(null);
 			actionContext.put("loginWarn", "You must first login to continue ^_^");

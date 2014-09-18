@@ -17,7 +17,7 @@
 		<div class="col-md-4">
 			<div class="form-group">
 				<label for="create-date">Create Date</label>
-				<input type="text" class="form-control" id="create-date" name="grouping.created" value="${grouping.created?string("mm/dd/yyyy")}" disabled>
+				<input type="text" class="form-control" id="create-date" name="grouping.created" value="${(grouping.created)?string("MM/dd/yyyy")}" disabled>
 			</div>
 		</div>
 	</div>

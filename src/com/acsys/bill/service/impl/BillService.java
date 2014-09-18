@@ -16,13 +16,14 @@ import com.acsys.bill.model.Attendant;
 import com.acsys.bill.model.Bill;
 import com.acsys.bill.service.IBillService;
 import com.acsys.common.Utils;
+import com.acsys.core.base.service.BaseService;
 
 /**
  * @author Nealy
  * @date Aug 20, 2014
  */
 @Service
-public class BillService implements IBillService {
+public class BillService extends BaseService implements IBillService {
 	@Resource
 	private IBillDao billDao;
 	@Resource
@@ -62,79 +63,150 @@ public class BillService implements IBillService {
 			return "";
 		}
 
+		String payUserId = bill.getPayUserId();
+		User payUser = userService.getUserById(payUserId);
+		if (!Utils.isEmpty(payUser)) {
+			double amount = payUser.getAmount();
+			amount -= bill.getAmount();
+			payUser.setAmount(amount);
+			userService.updateUser(payUser);
+		}
+
 		List<Attendant> attendants = bill.getAttendants();
 		for (Attendant attendant : attendants) {
-			if (Utils.isEmpty(attendant)) {
-				continue;
-			}
-			String userId = attendant.getUserId();
-			if (Utils.isEmpty(userId)) {
-				continue;
-			} else {
-				User user = userService.getUserById(userId);
-				if (Utils.isEmpty(user)) {
-					continue;
-				} else {
-					double amount = user.getAmount();
-					amount += attendant.getAmount();
-					user.setAmount(amount);
-					userService.updateUser(user);
-				}
-			}
-			attendant.setId(null);
-			attendant.setBillId(billId);
-			attendantDao.addAttendant(attendant);
+			addAttendant(attendant, billId);
 		}
 
 		return billId;
 	}
 
-	public void updateBill(Bill bill, String[] delAttendantIds, List<Attendant> addAttendants) throws Exception {
-		if (Utils.isEmpty(bill)) {
+	public void updateBill(Bill bill, String[] delAttendantIds) throws Exception {
+		if (Utils.isEmpty(bill) || Utils.isEmpty(bill.getId())) {
+			log.warn("Bill update abort. Param:bill=" + String.valueOf(bill) + " delAttendantIds=" + delAttendantIds);
 			return;
 		}
+
+		Bill oldBill = this.getBillById(bill.getId());
 
 		bill.setModified(new Date());
 		bill.setLastTime(new Date());
 		billDao.updateBillBase(bill);
-		for (String id : delAttendantIds) {
-			Attendant attendant = attendantDao.getAttendantById(id);
-			if (!Utils.isEmpty(attendant)) {
-				String userId = attendant.getUserId();
-				if (Utils.isEmpty(userId)) {
-					continue;
-				} else {
-					User user = userService.getUserById(userId);
-					if (Utils.isEmpty(user)) {
-						continue;
-					} else {
-						double amount = user.getAmount();
-						amount -= attendant.getAmount();
-						user.setAmount(amount);
-						userService.updateUser(user);
-					}
-				}
-				attendant.setDelFlag("1");
-				attendantDao.updateAttendant(attendant);
-			}
+
+		String payUserId = bill.getPayUserId();
+		User payUser = userService.getUserById(payUserId);
+		if (!Utils.isEmpty(payUser)) {
+			double amount = payUser.getAmount();
+			amount += oldBill.getAmount();
+			amount -= bill.getAmount();
+			payUser.setAmount(amount);
+			userService.updateUser(payUser);
 		}
-		for (Attendant attendant : addAttendants) {
-			String userId = attendant.getUserId();
-			if (Utils.isEmpty(userId)) {
-				continue;
+
+		List<Attendant> attendants = bill.getAttendants();
+		for (Attendant attendant : attendants) {
+			if (Utils.isEmpty(attendant.getId())) {
+				addAttendant(attendant, bill.getId());
 			} else {
-				User user = userService.getUserById(userId);
-				if (Utils.isEmpty(user)) {
-					continue;
-				} else {
-					double amount = user.getAmount();
-					amount += attendant.getAmount();
-					user.setAmount(amount);
-					userService.updateUser(user);
-				}
+				delAttendant(attendant.getId());
+				addAttendant(attendant, bill.getId());
 			}
-			attendant.setId(null);
-			attendantDao.addAttendant(attendant);
 		}
+
+		if (!Utils.isEmpty(delAttendantIds)) {
+			for (String id : delAttendantIds) {
+				delAttendant(id);
+			}
+		}
+	}
+
+	public void delBill(String billId) throws Exception {
+		if (Utils.isEmpty(billId)) {
+			log.warn("Bill del abort. Param:billId=" + billId);
+			return;
+		}
+
+		Bill bill = this.getBillById(billId);
+		if (Utils.isEmpty(billId)) {
+			log.warn("Bill is null. Param:billId=" + billId);
+			return;
+		}
+
+		List<Attendant> attendants = bill.getAttendants();
+		for (Attendant attendant : attendants) {
+			this.delAttendant(attendant.getId());
+		}
+		bill.setDelFlag("1");
+		bill.setModified(new Date());
+		bill.setLastTime(new Date());
+		this.updateBill(bill, null);
+	}
+
+	public String addAttendant(Attendant attendant, String billId) {
+		if (Utils.isEmpty(attendant)) {
+			log.warn("Attendant adding abort. Param:attendant=" + attendant + " billId=" + billId);
+			return "";
+		}
+		if (Utils.isEmpty(billId)) {
+			log.warn("Cannnot add an attendant without billId. Param:attendant=" + attendant + " billId=" + billId);
+			return "";
+		}
+		if (Utils.isEmpty(attendant.getUserId())) {
+			log.warn("Cannnot add an attendant without userId. Param:attendant=" + attendant + " billId=" + billId);
+			return "";
+		}
+
+		User user = null;
+		try {
+			user = userService.getUserById(attendant.getUserId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+		if (Utils.isEmpty(user)) {
+			log.warn("Cannnot add an attendant with nonexistent user. Param:attendant=" + attendant + " billId=" + billId);
+			return "";
+		}
+
+		double amount = user.getAmount();
+		amount += attendant.getAmount();
+		user.setAmount(amount);
+		userService.updateUser(user);
+
+		attendant.setId(null);
+		attendant.setBillId(billId);
+		attendant.setDelFlag("0");
+		return attendantDao.addAttendant(attendant);
+	}
+
+	public void delAttendant(String attendantId) {
+		if (Utils.isEmpty(attendantId)) {
+			log.warn("Param attendantId is required. Param:attendantId=" + attendantId);
+			return;
+		}
+
+		Attendant attendant = attendantDao.getAttendantById(attendantId);
+		if (Utils.isEmpty(attendant)) {
+			log.warn("Attendant doesn't exist. Param:attendantId=" + attendantId);
+			return;
+		}
+		User user = null;
+		try {
+			user = userService.getUserById(attendant.getUserId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		if (Utils.isEmpty(user)) {
+			log.warn("User doesn't exist. Param:attendant=" + attendant);
+			return;
+		}
+
+		double amount = user.getAmount();
+		amount -= attendant.getAmount();
+		user.setAmount(amount);
+		userService.updateUser(user);
+
+		attendant.setDelFlag("1");
+		attendantDao.updateAttendant(attendant);
 	}
 }

@@ -50,7 +50,7 @@
 	</insert>
 	
 	<update id="updateBill" parameterType="bill">
-		update bill set date=#{date}, place=#{place}, amount=#{amount}, pay_user_id=#{payUserId}, payUserName=#{pay_user_name}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, ip_addr=#{ipAddr}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}, del_flag=#{delFlag}
+		update bill set date=#{date}, place=#{place}, amount=#{amount}, pay_user_id=#{payUserId}, pay_user_name=#{payUserName}, grouping_id=#{groupingId}, grouping_name=#{groupingName}, ip_addr=#{ipAddr}, modified=#{modified}, last_time=#{lastTime}, remark=#{remark}, del_flag=#{delFlag}
 		where id=#{id}
 	</update>
 	

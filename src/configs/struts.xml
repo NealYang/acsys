@@ -54,7 +54,8 @@
 		
 		<action name="bill" class="com.acsys.bill.action.BillAction" method="input">
 			<result name="input" type="freemarker">/WEB-INF/resources/templates/bill/bill.ftl</result>
-			<result name="success" type="redirect">/bill</result>
+			<result name="directURL" type="redirect">${backParam}</result>
+			<result name="success" type="redirect">/home</result>
 		</action>
 		
 		<action name="grouping" class="com.acsys.grouping.action.GroupingAction" method="input">
@@ -81,6 +82,7 @@
 		</action>
 		<action name="login" class="com.acsys.account.action.LoginAction" method="input">
 			<result name="input" type="freemarker">/WEB-INF/resources/templates/account/login.ftl</result>
+			<result name="directURL" type="redirect">${preURL}</result>
 			<result name="success" type="redirect">/home</result>
 			<!-- <result name="success" type="redirectAction">home</result> -->
 		</action>
@@ -91,8 +93,8 @@
 	
 	<package name="resources" extends="struts-default">
 		<default-action-ref name="pagenofound" />
-		<action name="pagenofound">
-			<result type="freemarker">/WEB-INF/resources/templates/common/404.ftl</result>
+		<action name="pagenofound" class="com.acsys.common.PageNoFoundAction" >
+			<result name="success" type="freemarker">/WEB-INF/resources/templates/common/404.ftl</result>
 		</action>
 		<action name="error">
 			<result>/WEB-INF/assets/common/error.jsp</result>

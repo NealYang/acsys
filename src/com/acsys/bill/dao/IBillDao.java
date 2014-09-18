@@ -17,5 +17,5 @@ public interface IBillDao {
 
 	public String addBillBase(Bill bill);
 
-	public void updateBillBase(Bill bill);
+	public void updateBillBase(Bill bill) throws Exception;
 }

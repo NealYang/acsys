@@ -18,6 +18,9 @@
     <script src="/includes/js/html5shiv.min.js"></script>
     <script src="/includes/js/respond.min.js"></script>
     <![endif]-->
+    
+	<!-- jQuery necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/includes/js/jquery-2.1.1.js"></script>
 </head>
 
 <#import "../dashboard/dashboard.ftl" as dashboard />
@@ -95,8 +98,6 @@
 		</div>
 	</div>
 	
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="/includes/js/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/includes/js/bootstrap.min.js"></script>
 	<script src="/includes/js/jquery.qtip.js"></script>
@@ -106,7 +107,8 @@
 	<script type="text/javascript">
 		$(function(){
 			$.ajax({
-				url: "/acsys/grouping!loadGrouping?groupingId=${groupingId}",
+				async:false,
+				url: "/acsys/grouping!loadGrouping?groupingId=${groupingId!}",
 				cache:false,
 				context: document.body,
 				beforeSend :function(){

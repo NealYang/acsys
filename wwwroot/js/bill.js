@@ -1,16 +1,20 @@
 (function($) {
 	$(document).ready(function() {
-		// For page refresh start
+		/** Page initial start */
     	for(var i=0; i<$(".attendant-checkbox").size(); i++) {
 			var checkbox = $(".attendant-checkbox").get(i);
 			if(checkbox.checked != null && checkbox.checked != undefined && checkbox.checked == true) {
 				$(checkbox).parent().next().prop("hidden", false);
+				if($("#go-dutch").prop("checked")) {
+	    			$(checkbox).parent().next().attr("disabled", false);
+	    		} else {
+	    			$(checkbox).parent().next().attr("disabled", true);
+	    		}
 			} else {
 				$(checkbox).parent().next().prop("hidden", true);
 			}
 		}
-    	setAttendantsForForm()
-    	// For page refresh end
+    	/** Page initial end */
 		
 		$("#grouping-left").change(groupingChange);
 	    $("#grouping-right").change(groupingChange);
@@ -40,18 +44,25 @@
 	    $(".attendant-checkbox").click(function(){
 	    	if($(this).prop("checked")) {
 	    		$(this).parent().next().prop("hidden", false);
+	    		if($("#go-dutch").prop("checked")) {
+	    			$(this).parent().next().attr("disabled", false);
+	    		} else {
+	    			$(this).parent().next().attr("disabled", true);
+	    		}
 	    	} else {
 	    		$(this).parent().next().prop("hidden", true);
 	    	}
 	    	autoFillUserAmount();
-	    	setAttendantsForForm()
+	    	totalAmountCheck();
 	    });
 	    
 	    $(".user-amount").keyup(totalAmountCheck);
+	    $(".user-amount").blur(totalAmountCheck);
 	    
 	    $("#save-btn").on("click", function(){
 	    	$("#save-btn").disabledBtn();
 	    	if(validateForm()) {
+	    		setAttendantsForForm();
 	    		$("#form-bill").submit();
 	    	}
 	    });
@@ -65,8 +76,8 @@
 		result = totalAmountCheck() && result;
 		
 		if(!result) {
-			$(".error").qtip("destroy");
-			$(".error").qtip({
+			$(".has-error").qtip("destroy");
+			$(".has-error").qtip({
 				position: {my: "left center", at: "center right"},
 				style: {classes: "qtip-shadow qtip-rounded qtip-red"}
 			});
@@ -117,7 +128,7 @@
 	
 	function validateAttendant() {
 	    var errorMsg = "Please select at least one attendant.";
-	    if($("#attendants-div").children().length < 1) {
+	    if(getCheckedUserNum() < 1) {
 	        setErrorMsg($("#attendants"), errorMsg);
 	        return false;
 	    } else {
@@ -127,7 +138,7 @@
 	}
 	
 	function groupingChange() {
-		$("#input-hidden").val($(this).val());
+		$("#groupingId-hidden").val($(this).val());
     	$("#form-hidden").submit();
     	//window.location.href = "/acsys/bill?groupingId="+$(this).val();
 	}
@@ -144,6 +155,8 @@
 	}
 	
 	function autoFillUserAmount() {
+		if($("#go-dutch").prop("checked")) return;
+		
 		var checkedUserNum = getCheckedUserNum();
 		if(checkedUserNum == 0) return;
 		var amount = $("#amount").val();
@@ -180,19 +193,27 @@
 	}
 	
 	function setAttendantsForForm() {
-		$("#attendants-div").html("");
+		$("#attendants-hidden").html("");
+		var delAttendantIds = "";
 		var count = 0;
     	for(var i=0; i<$(".attendant-checkbox").size(); i++) {
 			var checkbox = $(".attendant-checkbox").get(i);
-			if(checkbox.checked != null && checkbox.checked != undefined && checkbox.checked == true) {
+			if(checkbox.checked != null && checkbox.checked != undefined && checkbox.checked) {
+				var attendantId = $(checkbox).next().next().val();
 				var userId = $(checkbox).next().val();
 				var userName = $(checkbox).parent().text().replace(/\s+/g,"").replace(/[\r\n]/g,"");
 				var amount = $(checkbox).parent().next().val();
-				$("#attendants-div").append("<input type='text' name='bill.attendants[" + count + "].userId' value='" + userId + "' hidden=true />")
-				.append("<input type='text' name='bill.attendants[" + count + "].userName' value='" + userName + "' hidden=true />")
-				.append("<input type='text' name='bill.attendants[" + count + "].amount' value='" + amount + "' hidden=true />");
-			count++;
+				$("#attendants-hidden").append("<input type='text' name='bill.attendants[" + count + "].id' value='" + attendantId + "' hidden=true />")
+					.append("<input type='text' name='bill.attendants[" + count + "].userId' value='" + userId + "' hidden=true />")
+					.append("<input type='text' name='bill.attendants[" + count + "].userName' value='" + userName + "' hidden=true />")
+					.append("<input type='text' name='bill.attendants[" + count + "].amount' value='" + amount + "' hidden=true />");
+				count++;
+			} else {
+				if($(checkbox).parent().find(".attendantId").val() != "") {
+					delAttendantIds += "," + $(checkbox).parent().find(".attendantId").val();
+				}
 			}
 		}
+    	$("#attendants-hidden").append("<input type='text' name='delAttendantIds' value='" + delAttendantIds + "' hidden=true />");
 	}
 })(jQuery)
