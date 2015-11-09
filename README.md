@@ -22,7 +22,7 @@ Tomcat config file: /resources/server.xml
 
 Run by eclipse:
 
-Run-Run Configurations/Debug Configurations-Java Application-Create a new configuration
+Run --> Run Configurations/Debug Configurations --> Java Application-Create a new configuration
 
  - Main-Project: this project
  - Main-main class :org.apache.catalina.startup.Bootstrap
@@ -32,4 +32,4 @@ Run-Run Configurations/Debug Configurations-Java Application-Create a new config
 
  - Classpath-User Entries: bootstrap.jar - D:\java\tomcat-6.0.41\bin
 
-http://localhost:9090/acsys/
+http://localhost:8080/acsys/
